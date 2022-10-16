@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Capítulo 3: Manipulación de Datos en R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="MÓDULO: MANEJO DE SOFTWARE     Linda Cabrera Orellana" />
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/shareon-1.4.1/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon-1.4.1/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain-0.2.6/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain-0.2.6/shareagain.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <link rel="stylesheet" href="see-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+class: center, middle, titular
+background-size: contain
+
+&lt;img src="img/see_azul.jpeg" width="300px"/&gt;
+# Capítulo 3: Manipulación de Datos en R 
+## **PROGRAMA INTERNACIONAL DE ESTADÍSTICA APLICADA A LA INVESTIGACIÓN CIENTÍFICA**
+#### MÓDULO: MANEJO DE SOFTWARE &lt;br&gt; &lt;br&gt; Linda Cabrera Orellana
+#### Octubre, 2022
+
+---
+
+class: middle, center
+
+<svg aria-hidden="true" role="img" viewBox="0 0 581 512" style="height:3em;width:3.4em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"/></svg>
+# **MANIPULACIÓN DE DATOS EN R**
+## CAPÍTULO 3
+
+---
+
+
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M75.23 33.4L320 63.1L564.8 33.4C571.5 32.56 578 36.06 581.1 42.12L622.8 125.5C631.7 143.4 622.2 165.1 602.9 170.6L439.6 217.3C425.7 221.2 410.8 215.4 403.4 202.1L320 63.1L236.6 202.1C229.2 215.4 214.3 221.2 200.4 217.3L37.07 170.6C17.81 165.1 8.283 143.4 17.24 125.5L58.94 42.12C61.97 36.06 68.5 32.56 75.23 33.4H75.23zM321.1 128L375.9 219.4C390.8 244.2 420.5 255.1 448.4 248L576 211.6V378.5C576 400.5 561 419.7 539.6 425.1L335.5 476.1C325.3 478.7 314.7 478.7 304.5 476.1L100.4 425.1C78.99 419.7 64 400.5 64 378.5V211.6L191.6 248C219.5 255.1 249.2 244.2 264.1 219.4L318.9 128H321.1z"/></svg> Contenido del Capítulo 3
+
+- Transformación de datos con `dplyr`
+   * Modificar el nombre de las variables
+   * Seleccionar o descartar variables
+   * Operador pipe `%&gt;%`
+   * Filtrar observaciones
+   * Agregar o editar variables
+   * Resumir información
+   * Agrupar o segmentar datos
+
+- Práctica 3.1
+
+- Datos ordenados con `tidyr`
+   * Ordenar datos a lo largo
+   * Ordenar datos a lo ancho
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M75.23 33.4L320 63.1L564.8 33.4C571.5 32.56 578 36.06 581.1 42.12L622.8 125.5C631.7 143.4 622.2 165.1 602.9 170.6L439.6 217.3C425.7 221.2 410.8 215.4 403.4 202.1L320 63.1L236.6 202.1C229.2 215.4 214.3 221.2 200.4 217.3L37.07 170.6C17.81 165.1 8.283 143.4 17.24 125.5L58.94 42.12C61.97 36.06 68.5 32.56 75.23 33.4H75.23zM321.1 128L375.9 219.4C390.8 244.2 420.5 255.1 448.4 248L576 211.6V378.5C576 400.5 561 419.7 539.6 425.1L335.5 476.1C325.3 478.7 314.7 478.7 304.5 476.1L100.4 425.1C78.99 419.7 64 400.5 64 378.5V211.6L191.6 248C219.5 255.1 249.2 244.2 264.1 219.4L318.9 128H321.1z"/></svg> Paquetes a utilizar
+
+.pull-left[
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M182.6 246.6C170.1 259.1 149.9 259.1 137.4 246.6L57.37 166.6C44.88 154.1 44.88 133.9 57.37 121.4C69.87 108.9 90.13 108.9 102.6 121.4L159.1 178.7L297.4 41.37C309.9 28.88 330.1 28.88 342.6 41.37C355.1 53.87 355.1 74.13 342.6 86.63L182.6 246.6zM182.6 470.6C170.1 483.1 149.9 483.1 137.4 470.6L9.372 342.6C-3.124 330.1-3.124 309.9 9.372 297.4C21.87 284.9 42.13 284.9 54.63 297.4L159.1 402.7L393.4 169.4C405.9 156.9 426.1 156.9 438.6 169.4C451.1 181.9 451.1 202.1 438.6 214.6L182.6 470.6z"/></svg> library(tidyverse)
+
+   * <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"/></svg> `library(dplyr)`
+
+   * <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"/></svg> `library(tidyr)`
+
+]
+
+.pull-right[
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M182.6 246.6C170.1 259.1 149.9 259.1 137.4 246.6L57.37 166.6C44.88 154.1 44.88 133.9 57.37 121.4C69.87 108.9 90.13 108.9 102.6 121.4L159.1 178.7L297.4 41.37C309.9 28.88 330.1 28.88 342.6 41.37C355.1 53.87 355.1 74.13 342.6 86.63L182.6 246.6zM182.6 470.6C170.1 483.1 149.9 483.1 137.4 470.6L9.372 342.6C-3.124 330.1-3.124 309.9 9.372 297.4C21.87 284.9 42.13 284.9 54.63 297.4L159.1 402.7L393.4 169.4C405.9 156.9 426.1 156.9 438.6 169.4C451.1 181.9 451.1 202.1 438.6 214.6L182.6 470.6z"/></svg> library(magrittr)
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M182.6 246.6C170.1 259.1 149.9 259.1 137.4 246.6L57.37 166.6C44.88 154.1 44.88 133.9 57.37 121.4C69.87 108.9 90.13 108.9 102.6 121.4L159.1 178.7L297.4 41.37C309.9 28.88 330.1 28.88 342.6 41.37C355.1 53.87 355.1 74.13 342.6 86.63L182.6 246.6zM182.6 470.6C170.1 483.1 149.9 483.1 137.4 470.6L9.372 342.6C-3.124 330.1-3.124 309.9 9.372 297.4C21.87 284.9 42.13 284.9 54.63 297.4L159.1 402.7L393.4 169.4C405.9 156.9 426.1 156.9 438.6 169.4C451.1 181.9 451.1 202.1 438.6 214.6L182.6 470.6z"/></svg> library(datos)
+
+]
+
+---
+
+class: middle, center, inverse
+
+&lt;img src="img/dplyr.png" width="150px"&gt;
+# Transformación de datos con `dplyr`
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Funciones del paquete `dplyr`
+
+&lt;br&gt;
+&lt;br&gt;
+
+| Función        |  Acción                                    |
+|:---------------|-------------------------------------------:|
+| `rename()`     | *Modifica el nombre de las variables* |
+| `select()`     | *Selecciona o descarta variables (columnas) de un conjunto de datos* |
+| `filter()`     | *Filtra las observaciones (filas) de interés* |
+| `mutate()`     | *Agrega o edita variables (columnas)* |
+| `summarise()`  | *Resume los datos en tablas* |
+| `group_by()`   | *Agrupa o segmenta los datos en función de una variable (columna)* |
+
+&lt;br&gt;
+
+.footnote[ [dplyr.tidyverse.org](https://dplyr.tidyverse.org/) ]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Modificar el nombre de las variables
+
+.pull-left[
+**`rename()`** se utiliza para cambiar el nombre de las variables. La función tiene el siguiente esquema:
+
+
+```r
+rename(data, columnas... )
+```
+
+Cambiando el nombre de las variables:
+
+
+```r
+colnames(profesores2)
+##  [1] "Fecha"                       "Genero"                     
+##  [3] "Edad"                        "Nivel_docencia"             
+##  [5] "Tiempo_impartiendo_docencia" "No_Alumnos"                 
+##  [7] "No_Alumnos NEE"              "AD_es_necesaria"            
+##  [9] "AD_en_cualquier_asignatura"  "Leyes_para_ANEE"            
+## [11] "Ratio_de_ANEE"               "Asistente_de_clases"        
+## [13] "Suficiente_instruccion"      "Material_utilizado"
+```
+
+]
+
+.pull-right[
+
+```r
+profesores2 &lt;- rename(profesores2, fecha= Fecha, 
+                      edad=Edad, sexo=Genero, 
+                      niveldocencia= Nivel_docencia,
+                      tiempo=Tiempo_impartiendo_docencia,
+                      alumnos=No_Alumnos,
+                      alumnosNEE=`No_Alumnos NEE`,
+                      necesaria=AD_es_necesaria,
+                      asignatura=AD_en_cualquier_asignatura,
+                      leyes=Leyes_para_ANEE,
+                      ratio=Ratio_de_ANEE,
+                      asistente=Asistente_de_clases,
+                      instruccion=Suficiente_instruccion,
+                      material=Material_utilizado)
+
+colnames(profesores2)
+##  [1] "fecha"         "sexo"          "edad"          "niveldocencia"
+##  [5] "tiempo"        "alumnos"       "alumnosNEE"    "necesaria"    
+##  [9] "asignatura"    "leyes"         "ratio"         "asistente"    
+## [13] "instruccion"   "material"
+```
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Seleccionar o descartar variables
+
+.pull-left[
+**`select()`** permite seleccionar rápidamente un subconjunto útil utilizando operaciones basadas en los nombres de las variables. La función tiene el siguiente esquema:
+
+
+```r
+select(data, columnas... )
+```
+
+## Ejercicio Práctico
+
+- **Indicador 1:** Número promedio de estudiantes
+
+- **Indicador 2:** Indicador 1 por sexo y nivel de educación
+]
+
+.pull-right[
+
+
+### Variables de trabajo
+
+* Sexo = `sexo`
+
+* Edad del encuestado = `edad`
+
+* Número de alumnos por profesor = `alumnos`
+
+* Nivel de docencia = `niveldocencia`
+
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Seleccionar o descartar variables
+
+Selecciono las variables que deseo del conjunto de datos:
+
+
+```r
+indicador_1a &lt;- select(profesores2, sexo, edad, alumnos, niveldocencia)
+
+colnames(indicador_1a)
+## [1] "sexo"          "edad"          "alumnos"       "niveldocencia"
+```
+
+Otra forma de seleccionar variables:
+
+
+```r
+indicador_1a &lt;- select(profesores2, 2, 3, 4, 6)
+
+colnames(indicador_1a)
+## [1] "sexo"          "edad"          "niveldocencia" "alumnos"
+```
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M414.8 40.79L286.8 488.8C281.9 505.8 264.2 515.6 247.2 510.8C230.2 505.9 220.4 488.2 225.2 471.2L353.2 23.21C358.1 6.216 375.8-3.624 392.8 1.232C409.8 6.087 419.6 23.8 414.8 40.79H414.8zM518.6 121.4L630.6 233.4C643.1 245.9 643.1 266.1 630.6 278.6L518.6 390.6C506.1 403.1 485.9 403.1 473.4 390.6C460.9 378.1 460.9 357.9 473.4 345.4L562.7 256L473.4 166.6C460.9 154.1 460.9 133.9 473.4 121.4C485.9 108.9 506.1 108.9 518.6 121.4V121.4zM166.6 166.6L77.25 256L166.6 345.4C179.1 357.9 179.1 378.1 166.6 390.6C154.1 403.1 133.9 403.1 121.4 390.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4L121.4 121.4C133.9 108.9 154.1 108.9 166.6 121.4C179.1 133.9 179.1 154.1 166.6 166.6V166.6z"/></svg> Operador `pipe` %&gt;%
+
+.pull-left[
+
+.center[
+&lt;img src="img/magrittr.png" width="200px"&gt;
+]
+
+`magrittr` ofrece un conjunto de operadores que hacen que su código sea más legible.
+
+
+```r
+library(magrittr)
+```
+
+]
+
+--
+
+.pull-right[
+
+* Estructura secuencias de operaciones de datos de izquierda a derecha (a diferencia de desde adentro hacia afuera).
+
+* Minimiza la necesidad de variables locales y definiciones de funciones, y
+
+* Facilita la adición de pasos en cualquier lugar de la secuencia de operaciones.
+
+Puede utilizar el atajo de teclado `Ctrl+Shift+M` para generar el operador `%&gt;%`.
+]
+
+.footnote[ [magrittr.tidyverse.org](https://magrittr.tidyverse.org/) ]
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M414.8 40.79L286.8 488.8C281.9 505.8 264.2 515.6 247.2 510.8C230.2 505.9 220.4 488.2 225.2 471.2L353.2 23.21C358.1 6.216 375.8-3.624 392.8 1.232C409.8 6.087 419.6 23.8 414.8 40.79H414.8zM518.6 121.4L630.6 233.4C643.1 245.9 643.1 266.1 630.6 278.6L518.6 390.6C506.1 403.1 485.9 403.1 473.4 390.6C460.9 378.1 460.9 357.9 473.4 345.4L562.7 256L473.4 166.6C460.9 154.1 460.9 133.9 473.4 121.4C485.9 108.9 506.1 108.9 518.6 121.4V121.4zM166.6 166.6L77.25 256L166.6 345.4C179.1 357.9 179.1 378.1 166.6 390.6C154.1 403.1 133.9 403.1 121.4 390.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4L121.4 121.4C133.9 108.9 154.1 108.9 166.6 121.4C179.1 133.9 179.1 154.1 166.6 166.6V166.6z"/></svg> Operador `pipe` %&gt;%
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+dataset %&gt;% 
+    funcion1() %&gt;% 
+    funcion2() %&gt;%
+    funcion3()
+```
+]
+
+--
+
+.pull-right[
+
+![](https://erikgahner.dk/img/2022/R_pipe.gif)
+
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M414.8 40.79L286.8 488.8C281.9 505.8 264.2 515.6 247.2 510.8C230.2 505.9 220.4 488.2 225.2 471.2L353.2 23.21C358.1 6.216 375.8-3.624 392.8 1.232C409.8 6.087 419.6 23.8 414.8 40.79H414.8zM518.6 121.4L630.6 233.4C643.1 245.9 643.1 266.1 630.6 278.6L518.6 390.6C506.1 403.1 485.9 403.1 473.4 390.6C460.9 378.1 460.9 357.9 473.4 345.4L562.7 256L473.4 166.6C460.9 154.1 460.9 133.9 473.4 121.4C485.9 108.9 506.1 108.9 518.6 121.4V121.4zM166.6 166.6L77.25 256L166.6 345.4C179.1 357.9 179.1 378.1 166.6 390.6C154.1 403.1 133.9 403.1 121.4 390.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4L121.4 121.4C133.9 108.9 154.1 108.9 166.6 121.4C179.1 133.9 179.1 154.1 166.6 166.6V166.6z"/></svg> Operador `pipe` %&gt;%
+
+&lt;img src="img/pipe.jpg" width="700" style="display: block; margin: auto;" /&gt;
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M414.8 40.79L286.8 488.8C281.9 505.8 264.2 515.6 247.2 510.8C230.2 505.9 220.4 488.2 225.2 471.2L353.2 23.21C358.1 6.216 375.8-3.624 392.8 1.232C409.8 6.087 419.6 23.8 414.8 40.79H414.8zM518.6 121.4L630.6 233.4C643.1 245.9 643.1 266.1 630.6 278.6L518.6 390.6C506.1 403.1 485.9 403.1 473.4 390.6C460.9 378.1 460.9 357.9 473.4 345.4L562.7 256L473.4 166.6C460.9 154.1 460.9 133.9 473.4 121.4C485.9 108.9 506.1 108.9 518.6 121.4V121.4zM166.6 166.6L77.25 256L166.6 345.4C179.1 357.9 179.1 378.1 166.6 390.6C154.1 403.1 133.9 403.1 121.4 390.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4L121.4 121.4C133.9 108.9 154.1 108.9 166.6 121.4C179.1 133.9 179.1 154.1 166.6 166.6V166.6z"/></svg> Operador `pipe` %&gt;%
+
+.pull-left[
+**Sin pipe**
+
+```r
+select(profesores2, sexo, edad, alumnos, niveldocencia)
+## # A tibble: 175 × 4
+##    sexo       edad alumnos niveldocencia                        
+##    &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;                                
+##  1 Masculino    36      42 Educación infantil, primaria o básica
+##  2 Femenino     31      37 Educación superior                   
+##  3 Masculino    35      30 Educación superior                   
+##  4 Femenino     26      19 Educación secundaria y bachillerato  
+##  5 Femenino     35      25 Educación superior                   
+##  6 Masculino    38      43 Educación superior                   
+##  7 Femenino     35      41 Educación superior                   
+##  8 Masculino    45      24 Educación superior                   
+##  9 Masculino    38      27 Educación superior                   
+## 10 Femenino     37      18 Educación superior                   
+## # … with 165 more rows
+```
+]
+
+.pull-right[
+**Con pipe**
+
+```r
+profesores2 %&gt;% select(sexo, edad, alumnos, niveldocencia)
+## # A tibble: 175 × 4
+##    sexo       edad alumnos niveldocencia                        
+##    &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;                                
+##  1 Masculino    36      42 Educación infantil, primaria o básica
+##  2 Femenino     31      37 Educación superior                   
+##  3 Masculino    35      30 Educación superior                   
+##  4 Femenino     26      19 Educación secundaria y bachillerato  
+##  5 Femenino     35      25 Educación superior                   
+##  6 Masculino    38      43 Educación superior                   
+##  7 Femenino     35      41 Educación superior                   
+##  8 Masculino    45      24 Educación superior                   
+##  9 Masculino    38      27 Educación superior                   
+## 10 Femenino     37      18 Educación superior                   
+## # … with 165 more rows
+```
+]
+
+
+---
+
+background-image: url("img/dplyr_filter.jpg")
+background-size: contain
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Filtrar observaciones
+
+Para resolver el indicador planteado, vamos a delimitar el universo a las personas de 40 o más años por lo que usaremos **`filter()`**. 
+
+
+```r
+profesores2 %&gt;% 
+    select(sexo, edad, alumnos, niveldocencia) %&gt;% 
+    filter(edad &gt;= 40)
+## # A tibble: 66 × 4
+##    sexo       edad alumnos niveldocencia                        
+##    &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;                                
+##  1 Masculino    45      24 Educación superior                   
+##  2 Masculino    47      33 Educación infantil, primaria o básica
+##  3 Masculino    47      19 Educación superior                   
+##  4 Femenino     44      28 Educación secundaria y bachillerato  
+##  5 Femenino     44      33 Educación superior                   
+##  6 Masculino    42      29 Educación superior                   
+##  7 Masculino    44      21 Educación superior                   
+##  8 Masculino    40      32 Educación superior                   
+##  9 Femenino     50      26 Educación infantil, primaria o básica
+## 10 Femenino     45      44 Educación infantil, primaria o básica
+## # … with 56 more rows
+```
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Filtrar observaciones
+
+Por si deseas combinar condiciones aquí tienes una lista de operadores de comparación y operadores lógicos:
+
+.pull-left[
+
+| Condición     |  Acción    |
+|:--------:|:--------------|
+| == | igual |
+| %in% | incluye |
+| != | diferente |
+| &gt; | mayor que |
+| &gt;= | mayor o igual que |
+| &lt; | menor que |
+| &lt;= | menor o igual que |
+
+]
+
+.pull-right[
+| Operador     |  Acción    |
+|:--------:|:--------------|
+| &amp; | y - Cuando se cumplen ambas condiciones |
+| &amp;#124; | o - Cuando se cumple una u otra condición |
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Filtrar observaciones
+
+Vamos a delimitar nuestros datos a la población femenina que no tiene estudiantes con NEE, mostrando solo las variables de edad, alumnos, nivel que imparte docencia y material utilizado.
+
+
+```r
+profesores2 %&gt;% 
+    filter(sexo=="Femenino" &amp; alumnosNEE==0) %&gt;% 
+    select(edad, alumnos, niveldocencia, material)
+## # A tibble: 47 × 4
+##     edad alumnos niveldocencia                         material      
+##    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;                                 &lt;chr&gt;         
+##  1    30      24 Educación secundaria y bachillerato   Diapositivas  
+##  2    29      35 Educación infantil, primaria o básica Pizarra       
+##  3    29      42 Educación infantil, primaria o básica Videos        
+##  4    44      33 Educación superior                    Diapositivas  
+##  5    34      26 Educación infantil, primaria o básica Pizarra       
+##  6    50      26 Educación infantil, primaria o básica Videos        
+##  7    31      34 Educación infantil, primaria o básica Diapositivas  
+##  8    36      26 Educación infantil, primaria o básica Pizarra       
+##  9    31      43 Educación infantil, primaria o básica Libro de texto
+## 10    26      37 Educación infantil, primaria o básica Videos        
+## # … with 37 more rows
+```
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Filtrar observaciones
+
+Vamos a delimitar nuestros datos a la población masculina que tiene 30, 31 y 32 años de edad, mostrando solo las variables de edad, alumnos, nivel que imparte docencia y material utilizado.
+
+
+```r
+profesores2 %&gt;% 
+    filter(sexo=="Masculino" &amp; (edad %in% c(30,31,32))) %&gt;% 
+    select(edad, alumnos, niveldocencia, material)
+## # A tibble: 7 × 4
+##    edad alumnos niveldocencia                         material            
+##   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;                                 &lt;chr&gt;               
+## 1    32      38 Educación superior                    Videos              
+## 2    31      32 Educación infantil, primaria o básica Pizarra             
+## 3    30      28 Educación infantil, primaria o básica Pizarra             
+## 4    30      21 Educación infantil, primaria o básica Videos              
+## 5    32      19 Educación superior                    Otro: Estoy indeciso
+## 6    31      42 Educación infantil, primaria o básica Diapositivas        
+## 7    32      19 Educación infantil, primaria o básica Diapositivas
+```
+
+---
+
+background-image: url("img/dplyr_mutate.png")
+background-size: contain
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Agregar o editar variables
+
+Vamos a delimitar nuestros datos a la población masculina que tiene 30, 31 y 32 años de edad. Con **`mutate()`** agregaremos una columna que contenga el número de estudiantes que no tienen NEE. Mostrar las primeras 7 columnas y la última.
+
+
+```r
+profesores2 %&gt;% 
+    mutate(sinNEE=alumnos-alumnosNEE) %&gt;% 
+    filter(sexo=="Masculino" &amp; (edad %in% c(30,31,32))) %&gt;% 
+    select(c(1:7, sinNEE, 14))
+## # A tibble: 7 × 9
+##   fecha               sexo   edad niveldocencia tiempo alumnos alumnosNEE sinNEE
+##   &lt;dttm&gt;              &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+## 1 2020-06-24 00:00:00 Masc…    32 Educación su… Más d…      38          0     38
+## 2 2020-06-25 00:00:00 Masc…    31 Educación in… Menos…      32          1     31
+## 3 2020-06-26 00:00:00 Masc…    30 Educación in… Menos…      28          0     28
+## 4 2020-06-27 00:00:00 Masc…    30 Educación in… Más d…      21          0     21
+## 5 2020-06-28 00:00:00 Masc…    32 Educación su… Más d…      19          1     18
+## 6 2020-06-29 00:00:00 Masc…    31 Educación in… Menos…      42          2     40
+## 7 2020-06-30 00:00:00 Masc…    32 Educación in… Menos…      19          0     19
+## # … with 1 more variable: material &lt;chr&gt;
+```
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Resumir información
+
+**`summarise()`** se encarga de colapsar un data frame en una sola fila. Es mucho más útil si lo enlazamos con `group_by()`.
+
+**Indicador 1:** Número promedio de estudiantes
+
+
+```r
+profesores2 %&gt;% 
+    summarise(EstudiantesPromedio = sum(alumnos)/n())
+## # A tibble: 1 × 1
+##   EstudiantesPromedio
+##                 &lt;dbl&gt;
+## 1                32.5
+```
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Resumir información
+
+**Indicador 3:** Número de profesores encuestados
+
+**Indicador 4:** Edad promedio de profesores encuestados
+
+**Indicador 5:** Número de estudiantes con NEE
+
+
+```r
+profesores2 %&gt;% 
+    summarise(TotalProfesores = n(),
+              EdadPromedioProfesores = mean(edad),
+              EstudiantesNEE = sum(alumnosNEE))
+## # A tibble: 1 × 3
+##   TotalProfesores EdadPromedioProfesores EstudiantesNEE
+##             &lt;int&gt;                  &lt;dbl&gt;          &lt;dbl&gt;
+## 1             175                   37.5            149
+```
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Agrupar o segmentar datos
+
+
+**`group_by()`** realiza operaciones en grupos definidos por variables que por sí sola no dará ningún resultado, por lo que debe ir seguido de la función `summarise()` con una acción apropiada para realizar.
+
+- **Indicador 2:** Número promedio de estudiantes por sexo y nivel de educación
+
+
+```r
+profesores2 %&gt;% 
+    group_by(sexo, niveldocencia) %&gt;% 
+    summarise(EstudiantesPromedio = sum(alumnos)/n())
+## `summarise()` has grouped output by 'sexo'. You can override using the
+## `.groups` argument.
+## # A tibble: 6 × 3
+## # Groups:   sexo [2]
+##   sexo      niveldocencia                         EstudiantesPromedio
+##   &lt;chr&gt;     &lt;chr&gt;                                               &lt;dbl&gt;
+## 1 Femenino  Educación infantil, primaria o básica                32.4
+## 2 Femenino  Educación secundaria y bachillerato                  33.1
+## 3 Femenino  Educación superior                                   33.3
+## 4 Masculino Educación infantil, primaria o básica                30.9
+## 5 Masculino Educación secundaria y bachillerato                  33.5
+## 6 Masculino Educación superior                                   31.9
+```
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M507.6 122.8c-2.904-12.09-18.25-16.13-27.04-7.338l-76.55 76.56l-83.1-.0002l0-83.1l76.55-76.56c8.791-8.789 4.75-24.14-7.336-27.04c-23.69-5.693-49.34-6.111-75.92 .2484c-61.45 14.7-109.4 66.9-119.2 129.3C189.8 160.8 192.3 186.7 200.1 210.1l-178.1 178.1c-28.12 28.12-28.12 73.69 0 101.8C35.16 504.1 53.56 512 71.1 512s36.84-7.031 50.91-21.09l178.1-178.1c23.46 7.736 49.31 10.24 76.17 6.004c62.41-9.84 114.6-57.8 129.3-119.2C513.7 172.1 513.3 146.5 507.6 122.8zM80 456c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24s24 10.74 24 24C104 445.3 93.25 456 80 456z"/></svg> Agrupar o segmentar datos
+
+- **Indicador 6:** Indicador 3, 4 y 5 por sexo y nivel de educación
+
+
+```r
+profesores2 %&gt;% 
+    group_by(niveldocencia, sexo) %&gt;% 
+    summarise(TotalProfesores = n(),
+              EdadPromedioProfesores = mean(edad),
+              EstudiantesNEE = sum(alumnosNEE))
+## `summarise()` has grouped output by 'niveldocencia'. You can override using the
+## `.groups` argument.
+## # A tibble: 6 × 5
+## # Groups:   niveldocencia [3]
+##   niveldocencia            sexo  TotalProfesores EdadPromedioPro… EstudiantesNEE
+##   &lt;chr&gt;                    &lt;chr&gt;           &lt;int&gt;            &lt;dbl&gt;          &lt;dbl&gt;
+## 1 Educación infantil, pri… Feme…              79             36.4             71
+## 2 Educación infantil, pri… Masc…              19             35.1             11
+## 3 Educación secundaria y … Feme…              25             43.3             20
+## 4 Educación secundaria y … Masc…              17             40.1             12
+## 5 Educación superior       Feme…              15             33.8             20
+## 6 Educación superior       Masc…              20             37.7             15
+```
+
+---
+
+background-color: var(--azul-claro)
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:3em;width:3.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M128 96h384v256h64V80C576 53.63 554.4 32 528 32h-416C85.63 32 64 53.63 64 80V352h64V96zM624 384h-608C7.25 384 0 391.3 0 400V416c0 35.25 28.75 64 64 64h512c35.25 0 64-28.75 64-64v-16C640 391.3 632.8 384 624 384zM365.9 286.2C369.8 290.1 374.9 292 380 292s10.23-1.938 14.14-5.844l48-48c7.812-7.813 7.812-20.5 0-28.31l-48-48c-7.812-7.813-20.47-7.813-28.28 0c-7.812 7.813-7.812 20.5 0 28.31l33.86 33.84l-33.86 33.84C358 265.7 358 278.4 365.9 286.2zM274.1 161.9c-7.812-7.813-20.47-7.813-28.28 0l-48 48c-7.812 7.813-7.812 20.5 0 28.31l48 48C249.8 290.1 254.9 292 260 292s10.23-1.938 14.14-5.844c7.812-7.813 7.812-20.5 0-28.31L240.3 224l33.86-33.84C281.1 182.4 281.1 169.7 274.1 161.9z"/></svg>
+## PRÁCTICA 3.1
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M362.7 19.32C387.7-5.678 428.3-5.678 453.3 19.32L492.7 58.75C517.7 83.74 517.7 124.3 492.7 149.3L444.3 197.7L314.3 67.72L362.7 19.32zM421.7 220.3L188.5 453.4C178.1 463.8 165.2 471.5 151.1 475.6L30.77 511C22.35 513.5 13.24 511.2 7.03 504.1C.8198 498.8-1.502 489.7 .976 481.2L36.37 360.9C40.53 346.8 48.16 333.9 58.57 323.5L291.7 90.34L421.7 220.3z"/></svg> Práctica 3.1
+
+
+1. Construir la siguiente tabla.
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Nivel que imparte docencia &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Profesores &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estudiantes &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estudiantes Promedio &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Edad Promedio &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Educación infantil, primaria o básica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 98 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3148 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Educación secundaria y bachillerato &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1398 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Educación superior &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1138 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+class: middle, center, inverse
+
+&lt;img src="img/tidyr.png" width="150px"&gt;
+# Datos ordenados con `tidyr`
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M93.13 257.7C71.25 275.1 53 313.5 38.63 355.1L99 333.1c5.75-2.125 10.62 4.749 6.625 9.499L11 454.7C3.75 486.1 0 510.2 0 510.2s206.6 13.62 266.6-34.12c60-47.87 76.63-150.1 76.63-150.1L256.5 216.7C256.5 216.7 153.1 209.1 93.13 257.7zM633.2 12.34c-10.84-13.91-30.91-16.45-44.91-5.624l-225.7 175.6l-34.99-44.06C322.5 131.9 312.5 133.1 309 140.5L283.8 194.1l86.75 109.2l58.75-12.5c8-1.625 11.38-11.12 6.375-17.5l-33.19-41.79l225.2-175.2C641.6 46.38 644.1 26.27 633.2 12.34z"/></svg> Datos ordenados
+
+Existen tres reglas interrelacionadas que hacen que un conjunto de datos sea ordenado:
+
+* Cada variable debe tener su propia columna.
+* Cada observación debe tener su propia fila.
+* Cada valor debe tener su propia celda.
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="img/tidy_data.png" alt="Figura: Reglas que hacen que un conjunto de datos sea ordenado" width="1000" /&gt;
+&lt;p class="caption"&gt;Figura: Reglas que hacen que un conjunto de datos sea ordenado&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M93.13 257.7C71.25 275.1 53 313.5 38.63 355.1L99 333.1c5.75-2.125 10.62 4.749 6.625 9.499L11 454.7C3.75 486.1 0 510.2 0 510.2s206.6 13.62 266.6-34.12c60-47.87 76.63-150.1 76.63-150.1L256.5 216.7C256.5 216.7 153.1 209.1 93.13 257.7zM633.2 12.34c-10.84-13.91-30.91-16.45-44.91-5.624l-225.7 175.6l-34.99-44.06C322.5 131.9 312.5 133.1 309 140.5L283.8 194.1l86.75 109.2l58.75-12.5c8-1.625 11.38-11.12 6.375-17.5l-33.19-41.79l225.2-175.2C641.6 46.38 644.1 26.27 633.2 12.34z"/></svg> Funciones del paquete `tidyr`
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+| Función        |  Acción                                    |
+|:---------------|-------------------------------------------:|
+| `pivot_longer()`     | *Modifica el nombre de las variables* |
+| `pivot_wider()`     | *Selecciona o descarta variables (columnas) de un conjunto de datos* |
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.footnote[ [tidyr.tidyverse.org](https://tidyr.tidyverse.org/) ]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M93.13 257.7C71.25 275.1 53 313.5 38.63 355.1L99 333.1c5.75-2.125 10.62 4.749 6.625 9.499L11 454.7C3.75 486.1 0 510.2 0 510.2s206.6 13.62 266.6-34.12c60-47.87 76.63-150.1 76.63-150.1L256.5 216.7C256.5 216.7 153.1 209.1 93.13 257.7zM633.2 12.34c-10.84-13.91-30.91-16.45-44.91-5.624l-225.7 175.6l-34.99-44.06C322.5 131.9 312.5 133.1 309 140.5L283.8 194.1l86.75 109.2l58.75-12.5c8-1.625 11.38-11.12 6.375-17.5l-33.19-41.79l225.2-175.2C641.6 46.38 644.1 26.27 633.2 12.34z"/></svg> Ordenar datos a lo largo
+
+&lt;br&gt;
+
+.pull-left[
+.center[
+&lt;img src="img/longer.png" width="600px"&gt;
+]
+]
+
+.pull-right[
+**`pivot_longer()`** alarga datos al contraer varias columnas en dos. Los nombres de columna se mueven a una nueva columna de `names_to` y los valores a una nueva columna de `values_to`.
+
+
+```r
+pivot_longer(data, cols, 
+             names_to = "name", 
+             values_to = "value", 
+             values_drop_na = FALSE)
+```
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M93.13 257.7C71.25 275.1 53 313.5 38.63 355.1L99 333.1c5.75-2.125 10.62 4.749 6.625 9.499L11 454.7C3.75 486.1 0 510.2 0 510.2s206.6 13.62 266.6-34.12c60-47.87 76.63-150.1 76.63-150.1L256.5 216.7C256.5 216.7 153.1 209.1 93.13 257.7zM633.2 12.34c-10.84-13.91-30.91-16.45-44.91-5.624l-225.7 175.6l-34.99-44.06C322.5 131.9 312.5 133.1 309 140.5L283.8 194.1l86.75 109.2l58.75-12.5c8-1.625 11.38-11.12 6.375-17.5l-33.19-41.79l225.2-175.2C641.6 46.38 644.1 26.27 633.2 12.34z"/></svg> Ordenar datos a lo largo
+
+.pull-left[
+
+```r
+library(datos)
+
+table4a
+## # A tibble: 3 × 3
+##   country     `1999` `2000`
+## * &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;
+## 1 Afghanistan    745   2666
+## 2 Brazil       37737  80488
+## 3 China       212258 213766
+```
+]
+
+.pull-right[
+
+```r
+
+tabla4a %&gt;%  pivot_longer(cols = c(`1999`, `2000`), 
+               names_to = "anio", 
+               values_to = "casos")
+## # A tibble: 6 × 3
+##   pais       anio   casos
+##   &lt;chr&gt;      &lt;chr&gt;  &lt;int&gt;
+## 1 Afganistán 1999     745
+## 2 Afganistán 2000    2666
+## 3 Brasil     1999   37737
+## 4 Brasil     2000   80488
+## 5 China      1999  212258
+## 6 China      2000  213766
+```
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M93.13 257.7C71.25 275.1 53 313.5 38.63 355.1L99 333.1c5.75-2.125 10.62 4.749 6.625 9.499L11 454.7C3.75 486.1 0 510.2 0 510.2s206.6 13.62 266.6-34.12c60-47.87 76.63-150.1 76.63-150.1L256.5 216.7C256.5 216.7 153.1 209.1 93.13 257.7zM633.2 12.34c-10.84-13.91-30.91-16.45-44.91-5.624l-225.7 175.6l-34.99-44.06C322.5 131.9 312.5 133.1 309 140.5L283.8 194.1l86.75 109.2l58.75-12.5c8-1.625 11.38-11.12 6.375-17.5l-33.19-41.79l225.2-175.2C641.6 46.38 644.1 26.27 633.2 12.34z"/></svg> Ordenar datos a lo ancho
+
+&lt;br&gt;
+
+.pull-left[
+.center[
+&lt;img src="img/wider.png" width="600px"&gt;
+]
+]
+
+.pull-right[
+**`pivot_wider()`** es lo contrario de `pivot_longer()`, amplia los datos expandiendo dos columnas en varias. Una columna proporciona los nuevos nombres de columna, la otra los valores..
+
+
+```r
+pivot_wider(data, 
+            names_from = "name",
+            values_from = "value")
+```
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M93.13 257.7C71.25 275.1 53 313.5 38.63 355.1L99 333.1c5.75-2.125 10.62 4.749 6.625 9.499L11 454.7C3.75 486.1 0 510.2 0 510.2s206.6 13.62 266.6-34.12c60-47.87 76.63-150.1 76.63-150.1L256.5 216.7C256.5 216.7 153.1 209.1 93.13 257.7zM633.2 12.34c-10.84-13.91-30.91-16.45-44.91-5.624l-225.7 175.6l-34.99-44.06C322.5 131.9 312.5 133.1 309 140.5L283.8 194.1l86.75 109.2l58.75-12.5c8-1.625 11.38-11.12 6.375-17.5l-33.19-41.79l225.2-175.2C641.6 46.38 644.1 26.27 633.2 12.34z"/></svg> Ordenar datos a lo ancho
+
+.pull-left[
+
+```r
+
+table2
+## # A tibble: 12 × 4
+##    country      year type            count
+##    &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;           &lt;int&gt;
+##  1 Afghanistan  1999 cases             745
+##  2 Afghanistan  1999 population   19987071
+##  3 Afghanistan  2000 cases            2666
+##  4 Afghanistan  2000 population   20595360
+##  5 Brazil       1999 cases           37737
+##  6 Brazil       1999 population  172006362
+##  7 Brazil       2000 cases           80488
+##  8 Brazil       2000 population  174504898
+##  9 China        1999 cases          212258
+## 10 China        1999 population 1272915272
+## 11 China        2000 cases          213766
+## 12 China        2000 population 1280428583
+```
+]
+
+.pull-right[
+
+```r
+
+tabla2 %&gt;%  pivot_wider(names_from = tipo, 
+                        values_from = cuenta)
+## # A tibble: 6 × 4
+##   pais        anio  casos  población
+##   &lt;chr&gt;      &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afganistán  1999    745   19987071
+## 2 Afganistán  2000   2666   20595360
+## 3 Brasil      1999  37737  172006362
+## 4 Brasil      2000  80488  174504898
+## 5 China       1999 212258 1272915272
+## 6 China       2000 213766 1280428583
+```
+]
+
+---
+
+class: middle, center, inverse
+
+&lt;br&gt;
+&lt;br&gt;
+
+# **¡FIN!**
+## Importación y Orden de los Datos en R
+
+### Síguenos
+
+.pull-left[
+.center[
+### [@socecuest <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.8 90.69 226.4 209.3 245V327.7h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.3 482.4 504 379.8 504 256z"/></svg>](https://www.facebook.com/socecuest)
+
+### [@see_estadistica <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>](https://www.instagram.com/see_estadistica/)
+]]
+
+.pull-right[
+.center[
+### [@see_estadistica <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M459.4 151.7c.325 4.548 .325 9.097 .325 13.65 0 138.7-105.6 298.6-298.6 298.6-59.45 0-114.7-17.22-161.1-47.11 8.447 .974 16.57 1.299 25.34 1.299 49.06 0 94.21-16.57 130.3-44.83-46.13-.975-84.79-31.19-98.11-72.77 6.498 .974 12.99 1.624 19.82 1.624 9.421 0 18.84-1.3 27.61-3.573-48.08-9.747-84.14-51.98-84.14-102.1v-1.299c13.97 7.797 30.21 12.67 47.43 13.32-28.26-18.84-46.78-51.01-46.78-87.39 0-19.49 5.197-37.36 14.29-52.95 51.65 63.67 129.3 105.3 216.4 109.8-1.624-7.797-2.599-15.92-2.599-24.04 0-57.83 46.78-104.9 104.9-104.9 30.21 0 57.5 12.67 76.67 33.14 23.72-4.548 46.46-13.32 66.6-25.34-7.798 24.37-24.37 44.83-46.13 57.83 21.12-2.273 41.58-8.122 60.43-16.24-14.29 20.79-32.16 39.31-52.63 54.25z"/></svg>](https://twitter.com/see_estadistica)
+
+### [@sosecuest <svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M248 8C111 8 0 119 0 256S111 504 248 504 496 392.1 496 256 384.1 8 248 8zM362.1 176.7c-3.732 39.22-19.88 134.4-28.1 178.3-3.476 18.58-10.32 24.82-16.95 25.42-14.4 1.326-25.34-9.517-39.29-18.66-21.83-14.31-34.16-23.22-55.35-37.18-24.49-16.14-8.612-25 5.342-39.5 3.652-3.793 67.11-61.51 68.33-66.75 .153-.655 .3-3.1-1.154-4.384s-3.59-.849-5.135-.5q-3.283 .746-104.6 69.14-14.85 10.19-26.89 9.934c-8.855-.191-25.89-5.006-38.55-9.123-15.53-5.048-27.88-7.717-26.8-16.29q.84-6.7 18.45-13.7 108.4-47.25 144.6-62.3c68.87-28.65 83.18-33.62 92.51-33.79 2.052-.034 6.639 .474 9.61 2.885a10.45 10.45 0 0 1 3.53 6.716A43.76 43.76 0 0 1 362.1 176.7z"/></svg>](https://t.me/sosecuest)
+]]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
