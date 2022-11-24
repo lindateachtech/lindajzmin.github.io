@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Capítulo 4: Análisis Exploratorio de Datos</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="LINDA CABRERA ORELLANA FERNANDA JURADO MANTILLA" />
+    <script src="libs/header-attrs-2.17/header-attrs.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/shareon-1.4.1/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon-1.4.1/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain-0.2.6/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain-0.2.6/shareagain.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <link rel="stylesheet" href="theme-masapp.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+class: center, middle, titular
+background-size: contain
+
+&lt;img style="border-radius: 50%;" src="img/masapp.jpg" width="250px"/&gt;
+# Capítulo 4: Análisis Exploratorio de Datos 
+## **CAPACITACIÓN**
+#### LINDA CABRERA ORELLANA&lt;br&gt;FERNANDA JURADO MANTILLA
+#### Noviembre, 2022
+
+---
+
+
+
+# Contenido del Capítulo 4
+
+- Creación de gráficos con `ggplot2`
+   * Gramática de los gráficos
+   * Data
+   * Estética
+   * Geometrías
+   * Facetas
+   * Práctica 4.1
+   * Más Estética
+   * Transformaciones Estadísticas
+   * Coordenadas y Escalas
+   * Temas visuales
+   * Práctica 4.3
+
+- Gráficos dinámicos con `plotly`
+
+---
+
+## Paquetes a utilizar
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg> `library(tidyverse)`
+
+   * <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg> `library(readr)`
+   
+   * <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg> `library(dplyr)`
+   
+   * <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg> `library(ggplot2)`
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg> `library(magrittr)`
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg> `library(plotly)`
+
+
+
+---
+
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:3em;width:3em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M24 32C37.25 32 48 42.75 48 56V408C48 421.3 58.75 432 72 432H488C501.3 432 512 442.7 512 456C512 469.3 501.3 480 488 480H72C32.24 480 0 447.8 0 408V56C0 42.75 10.75 32 24 32zM128 136C128 122.7 138.7 112 152 112H360C373.3 112 384 122.7 384 136C384 149.3 373.3 160 360 160H152C138.7 160 128 149.3 128 136zM296 208C309.3 208 320 218.7 320 232C320 245.3 309.3 256 296 256H152C138.7 256 128 245.3 128 232C128 218.7 138.7 208 152 208H296zM424 304C437.3 304 448 314.7 448 328C448 341.3 437.3 352 424 352H152C138.7 352 128 341.3 128 328C128 314.7 138.7 304 152 304H424z"/></svg>
+# Creación de gráficos con `ggplot2`
+
+---
+
+background-image: url("img/grammar.png")
+background-size: contain
+
+---
+
+## Gramática de los gráficos
+
+- **Data:** datos sin procesar que desea trazar.
+- **Geometrías `geom_:`** formas geométricas que representarán los datos.
+- **Estética `aes()`:** estética de los objetos geométricos y estadísticos, como posición, color, tamaño, forma y transparencia.
+- **Escalas `scale_`:** asignaciones entre los datos y las dimensiones estéticas, como el rango de datos para trazar el ancho o los valores de los factores para los colores.
+- **Transformaciones estadísticas `stat_`:** resúmenes estadísticos de los datos, como cuantiles, curvas ajustadas y sumas.
+- **Sistema de coordenadas `coord_`:** transformación utilizada para mapear coordenadas de datos en el plano del rectángulo de datos.
+- **Facetas `facet_`:** disposición de los datos en una cuadrícula de gráficos.
+- **Temas visuales `theme()`:** los valores predeterminados visuales generales de una trama, como el fondo, las cuadrículas, los ejes, el tipo de letra predeterminado, los tamaños y los colores.
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.footnote[
+[Referencias de ggplot2](https://ggplot2.tidyverse.org/reference/) | [ggplot2.tidyverse.org](https://ggplot2.tidyverse.org/)
+]
+
+---
+
+## Data
+
+.pull-left[
+Un **ggplot** necesita especificar mínimo tres cosas: los datos, la estética y una geometría. 
+
+Siempre comenzamos a definir un objeto de trazado llamando a la **data** mediante `data %&gt;% ggplot()` que simplemente le dice a `ggplot2` que vamos a trabajar con esos datos.
+
+Primero, cargamos el paquete `ggplot2` que es parte del `tidyverse`.
+
+
+```r
+library(ggplot2)
+```
+
+
+```r
+ventas %&gt;% ggplot()
+```
+]
+
+.pull-right[
+![](4_EDA_files/figure-html/graf3-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Estética
+
+**Aesthetics** significa describir un objeto en nuestros gráficos. Sin estética no tenemos nada que mostrar en nuestros gráficos.
+
+Las variables del conjunto de datos se asignan a propiedades visuales de gráficos con **aesthetics mapping**.
+
+Depende del tipo de gráfico estadístico que estemos produciendo, pero generalmente mapeamos:
+   * una variable que se mostrará en el eje `\(x\)`
+   * una variable que se mostrará en el eje `\(y\)` (en algunos casos solo necesitamos mapear a un solo eje)
+   * se pueden asignar otras variables al color, la forma, el tamaño, el color de relleno, etc. del objeto.
+
+
+---
+
+background-image: url("img/aesthetics.png")
+background-size: contain
+
+---
+
+## Estética
+
+.pull-left[
+
+En la mayoría de los casos, es posible que desee trazar una o dos variables: una en el eje `\(x\)` y otra en el eje `\(y\)`. Estas son estéticas posicionales y, por lo tanto, agregamos `aes(x = var1, y = var2)` a la llamada **ggplot()**.
+
+Sin embargo, también hay casos en los que hay que especificar una o incluso tres o más variables.
+
+
+```r
+ventas %&gt;% ggplot(aes(x=TOTAL_VENTAS, 
+                      y=TOTAL_COMPRAS))
+```
+]
+
+.pull-right[
+![](4_EDA_files/figure-html/graf5-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Geometrías
+
+.pull-left[
+Hay muchas geometrías diferentes (llamadas **geoms** porque cada función generalmente comienza con `geom_`) que se pueden agregar a un ggplot de forma predeterminada.
+
+Tenemos que decirle a `ggplot2` qué estilo queremos usar, por ejemplo, agregando `geom_point()` para crear un gráfico de puntos o gráfico de dispersión.
+
+
+```r
+ventas %&gt;% ggplot(aes(x=TOTAL_VENTAS, 
+                      y=TOTAL_COMPRAS)) +
+    geom_point()
+```
+]
+
+.pull-right[
+![](4_EDA_files/figure-html/graf7-1.png)&lt;!-- --&gt;
+]
+
+---
+
+background-image: url("img/geoms.png")
+background-size: contain
+
+---
+
+## Facetas
+
+Las facetas dividen un conjunto en subconjuntos basados en los valores de uno o más variables categóricas.
+
+* **Facet** es un objeto que crea muchos gráficos pequeños que son variaciones de un solo gráfico. 
+
+* Los datos se dividen en **grupos** (facetas) y los datos se trazan en sus propios gráficos usando el mismo sistema de coordenadas.
+
+* Tenemos dos opciones al generar facetas:
+   * Gráfico dividido según filas y columnas: `facet_grid()`
+   * Envolver subconjuntos en columnas: `facet_wrap()` 
+
+---
+
+background-image: url("img/facet.png")
+background-size: contain
+
+---
+
+.panelset[
+.panel[.panel-name[facet_grid1]
+.pull-left[
+
+```r
+ventas %&gt;%
+    filter(mes=="Ene" | 
+               mes=="Feb" | 
+               mes=="Mar" | 
+               mes=="Abr") %&gt;% 
+    ggplot(aes(x=TOTAL_VENTAS, 
+                      y=TOTAL_COMPRAS)) +
+    geom_point() +
+    facet_grid(.~mes)
+```
+]
+.pull-right[
+![](4_EDA_files/figure-html/fc2-1.png)&lt;!-- --&gt;
+]
+]
+
+.panel[.panel-name[facet_grid2]
+.pull-left[
+
+```r
+ventas %&gt;%
+    filter(mes=="Ene" | 
+               mes=="Feb" | 
+               mes=="Mar" | 
+               mes=="Abr") %&gt;% 
+    ggplot(aes(x=TOTAL_VENTAS, 
+               y=TOTAL_COMPRAS)) +
+    geom_point() +
+    facet_grid(mes~.)
+```
+]
+.pull-right[
+![](4_EDA_files/figure-html/fc4-1.png)&lt;!-- --&gt;
+]
+]
+
+.panel[.panel-name[facet_grid3]
+.pull-left[
+
+```r
+ventas %&gt;% 
+    filter((mes=="Ene" | 
+                mes=="Feb" | 
+                mes=="Mar" | 
+                =="Abr") &amp;
+               (provincia=="PICHINCHA" |
+                    provincia=="GUAYAS" |
+                    provincia=="AZUAY")) %&gt;% 
+    ggplot(aes(x=TOTAL_VENTAS, 
+                      y=TOTAL_COMPRAS)) +
+    geom_point() +
+    facet_grid(provincia~mes)
+```
+]
+.pull-right[
+![](4_EDA_files/figure-html/fc6-1.png)&lt;!-- --&gt;
+]
+]
+
+.panel[.panel-name[facet_wrap]
+.pull-left[
+
+```r
+ventas %&gt;%
+    filter(mes=="Ene" | 
+               mes=="Feb" | 
+               mes=="Mar" | 
+               mes=="Abr") %&gt;% 
+    ggplot(aes(x=TOTAL_VENTAS, 
+               y=TOTAL_COMPRAS)) +
+    geom_point() +
+    facet_wrap(~mes)
+```
+]
+.pull-right[
+![](4_EDA_files/figure-html/fc8-1.png)&lt;!-- --&gt;
+]
+]
+]
+
+---
+
+background-color: var(--azul-claro)
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:3em;width:3.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M64 96c0-35.3 28.7-64 64-64H512c35.3 0 64 28.7 64 64V352H512V96H128V352H64V96zM0 403.2C0 392.6 8.6 384 19.2 384H620.8c10.6 0 19.2 8.6 19.2 19.2c0 42.4-34.4 76.8-76.8 76.8H76.8C34.4 480 0 445.6 0 403.2zM281 209l-31 31 31 31c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-48-48c-9.4-9.4-9.4-24.6 0-33.9l48-48c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM393 175l48 48c9.4 9.4 9.4 24.6 0 33.9l-48 48c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l31-31-31-31c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg>
+## PRÁCTICA 4.1
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg> Práctica 4.1
+
+1. Recrea el código R necesario para generar los siguientes gráficos:
+
+.pull-left[
+![](4_EDA_files/figure-html/p1-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+![](4_EDA_files/figure-html/p2-1.png)&lt;!-- --&gt;
+]
+
+
+---
+
+## Más Estética
+
+.pull-left[
+Los gráficos pueden tener más de una **geometría**, en este caso tienen un gráfico de puntos y de forma superpuesta un gráfico de líneas suavizadas.
+
+
+```r
+ventas %&gt;% 
+    filter((mes=="Ene" |
+                mes=="Feb" |
+                mes=="Mar" |
+                mes=="Abr") &amp;
+               (provincia=="PICHINCHA" |
+                    provincia=="GUAYAS" |
+                    provincia=="AZUAY")) %&gt;% 
+    ggplot(aes(x = TOTAL_VENTAS, 
+               y = TOTAL_COMPRAS)) +
+    geom_point() +
+    geom_smooth()
+```
+]
+
+.pull-right[
+![](4_EDA_files/figure-html/me2-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Más Estética
+
+.pull-left[
+Podemos visualizar más variables en las geometrías, agregando atributos **aesthetics** en la geometría.
+
+
+```r
+ventas %&gt;% 
+    filter((mes=="Ene" |
+                mes=="Feb" |
+                mes=="Mar" |
+                mes=="Abr") &amp;
+               (provincia=="PICHINCHA" |
+                    provincia=="GUAYAS" |
+                    provincia=="AZUAY")) %&gt;% 
+    ggplot(aes(x = TOTAL_VENTAS,
+               y = TOTAL_COMPRAS)) +
+    geom_point(aes(color = provincia,
+                   shape = mes)) +
+    geom_smooth()
+```
+]
+
+.pull-right[
+![](4_EDA_files/figure-html/me4-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Transformaciones estadísticas
+
+**Stats** son métodos que alteran la posición de las geometrías. Podemos representar más de una estadística en una figura.
+
+La capa de **Stats** representa una forma alternativa de crear una capa, ya que es una transformación del conjunto de datos original.
+
+Con las estadísticas, creamos variables adicionales (transformadas) para mapear la estética.
+
+Los métodos estadísticos más importantes disponibles para los gráficos se dividen en cinco clases:
+   * **bin** (particiones y mallas - para histogramas)
+   * **summary** (estadísticas básicas: media, mediana, desviación, …)
+   * **region** (límites de intervalo y región)
+   * **smooth** (regresión, smoothing, interpolación y estimación de densidad)
+   * **link** (métodos para calcular bordes de gráficos basados en un conjunto de nodos o puntos)
+
+---
+
+## Transformaciones estadísticas
+
+Hay docenas de capas de **Stats** especificadas con un `stat_function`. La mayoría de los geoms y las estadísticas vienen en pares que casi siempre se usan en conjunto. La siguiente tabla contiene los pares entre geometrías y estadísticos que se usan en conjunto.
+
+.pull-left[
+| geometría           | estadístico         |
+|---------------------|---------------------|
+| `geom_bar()`        | `stat_count()`      |
+| `geom_point()`      | `stat_identity()`, `stat_sum()`   |
+| `geom_line()`       | `stat_identity()`   |
+| `geom_bin2d()`      | `stat_bin_2d()`     |
+| `geom_boxplot()`    | `stat_boxplot()`    |
+| `geom_contour()`    | `stat_contour()`    |
+| `geom_count()`      | `stat_sum()`        |
+| `geom_density()`    | `stat_density()`    |
+| `geom_density_2d()` | `stat_density_2d()` |
+]
+
+.pull-right[
+| geometría           | estadístico         |
+|---------------------|---------------------|
+| `geom_hex()`        | `stat_hex()`        |
+| `geom_freqpoly()`   | `stat_bin()`        |
+| `geom_histogram()`  | `stat_bin()`        |
+| `geom_qq_line()`    | `stat_qq_line()`    |
+| `geom_qq()`         | `stat_qq()`         |
+| `geom_quantile()`   | `stat_quantile()`   |
+| `geom_smooth()`     | `stat_smooth()`     |
+| `geom_violin()`     | `stat_violin()`     |
+| `geom_sf()`         | `stat_sf()`         |
+]
+
+
+
+---
+
+
+class: middle, center, inverse
+
+&lt;br&gt;
+&lt;br&gt;
+
+# Análisis Exploratorio de Datos
+## **CAPÍTULO 4**
+
+&lt;br&gt;
+&lt;br&gt;
+
+.center[
+### [@MasappEC <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg>](https://www.facebook.com/MasappEC/)
+
+### [@Masappdata <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>](https://twitter.com/Masappdata)
+]
+
+.pull-right[
+Para dudas y preguntas:
+<svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg> Linda Cabrera O. (+34 924 609 588)
+<svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg> Fernanda Jurado M. (+593 99 432 3324)
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
