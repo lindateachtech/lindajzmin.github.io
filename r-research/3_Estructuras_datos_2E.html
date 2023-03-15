@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Sección 3: Estructuras de Datos en R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="MÓDULO: SOFTWARES PARA EL MANEJO DE DATOS     Linda Cabrera Orellana" />
+    <script src="libs/header-attrs-2.17/header-attrs.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/shareon-1.4.1/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon-1.4.1/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain-0.2.6/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain-0.2.6/shareagain.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <link rel="stylesheet" href="see-theme2E.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+class: center, middle, titular
+background-size: contain
+
+&lt;img src="img/see.png" width="250px"/&gt;
+# Sección 3: Estructuras de Datos en R 
+## **PROGRAMA INTERNACIONAL DE ESTADÍSTICA APLICADA A LA INVESTIGACIÓN CIENTÍFICA**
+#### MÓDULO: SOFTWARES PARA EL MANEJO DE DATOS &lt;br&gt; &lt;br&gt; Linda Cabrera Orellana
+#### Marzo, 2023
+
+
+---
+
+
+
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:3em;width:3em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M128 64c0-35.3 28.7-64 64-64H352V128c0 17.7 14.3 32 32 32H512V448c0 35.3-28.7 64-64 64H192c-35.3 0-64-28.7-64-64V336H302.1l-39 39c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l39 39H128V64zm0 224v48H24c-13.3 0-24-10.7-24-24s10.7-24 24-24H128zM512 128H384V0L512 128z"/></svg>
+# Importar datos
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM80 224H96c22.1 0 40 17.9 40 40v8c0 8.8-7.2 16-16 16s-16-7.2-16-16v-8c0-4.4-3.6-8-8-8H80c-4.4 0-8 3.6-8 8v80c0 4.4 3.6 8 8 8H96c4.4 0 8-3.6 8-8v-8c0-8.8 7.2-16 16-16s16 7.2 16 16v8c0 22.1-17.9 40-40 40H80c-22.1 0-40-17.9-40-40V264c0-22.1 17.9-40 40-40zm72 46.4c0-25.6 20.8-46.4 46.4-46.4H216c8.8 0 16 7.2 16 16s-7.2 16-16 16H198.4c-7.9 0-14.4 6.4-14.4 14.4c0 5.2 2.8 9.9 7.2 12.5l25.4 14.5c14.4 8.3 23.4 23.6 23.4 40.3c0 25.6-20.8 46.4-46.4 46.4H168c-8.8 0-16-7.2-16-16s7.2-16 16-16h25.6c7.9 0 14.4-6.4 14.4-14.4c0-5.2-2.8-9.9-7.2-12.5l-25.4-14.5C160.9 302.4 152 287 152 270.4zM280 240v31.6c0 23 5.5 45.6 16 66c10.5-20.3 16-42.9 16-66V240c0-8.8 7.2-16 16-16s16 7.2 16 16v31.6c0 34.7-10.3 68.7-29.6 97.6l-5.1 7.7c-3 4.5-8 7.1-13.3 7.1s-10.3-2.7-13.3-7.1l-5.1-7.7c-19.3-28.9-29.6-62.9-29.6-97.6V240c0-8.8 7.2-16 16-16s16 7.2 16 16z"/></svg> Importar archivos `.csv`
+
+.pull-left[
+
+.center[
+&lt;img src="img/readr.png" width="200px"&gt;
+]
+
+`readr` lee datos rectangulares de archivos delimitados, como valores separados por comas (CSV) y valores separados por tabuladores (TSV).
+
+]
+
+.pull-right[
+
+Para leer un archivo `.csv` la función a utilizar es `read_csv()` del paquete `readr` que es parte del `tidyverse`. Para cargar nuestro archivo:
+
+
+```r
+library(readr)
+players21 &lt;- read_csv("data/CSVplayers_21.csv")
+```
+
+También lo podemos hacer con el sistema base de <svg aria-hidden="true" role="img" viewBox="0 0 581 512" style="height:1em;width:1.13em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"/></svg>, aquí no necesitamos cargar ninguna librería. Para esto, nos ubicamos en la barra de herramientas `File -&gt; Import Dataset -&gt; From Text (readr)`.
+
+]
+
+.footnote[ [readr.tidyverse.org](https://readr.tidyverse.org/) ]
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M365.3 93.38l-74.63-74.64C278.6 6.742 262.3 0 245.4 0H64C28.65 0 0 28.65 0 64l.0065 384c0 35.34 28.65 64 64 64H320c35.2 0 64-28.8 64-64V138.6C384 121.7 377.3 105.4 365.3 93.38zM336 448c0 8.836-7.164 16-16 16H64.02c-8.838 0-16-7.164-16-16L48 64.13c0-8.836 7.164-16 16-16h160L224 128c0 17.67 14.33 32 32 32h79.1V448zM229.1 233.3L192 280.9L154.9 233.3C146.8 222.8 131.8 220.9 121.3 229.1C110.8 237.2 108.9 252.3 117.1 262.8L161.6 320l-44.53 57.25c-8.156 10.47-6.25 25.56 4.188 33.69C125.7 414.3 130.8 416 135.1 416c7.156 0 14.25-3.188 18.97-9.25L192 359.1l37.06 47.65C233.8 412.8 240.9 416 248 416c5.125 0 10.31-1.656 14.72-5.062c10.44-8.125 12.34-23.22 4.188-33.69L222.4 320l44.53-57.25c8.156-10.47 6.25-25.56-4.188-33.69C252.2 220.9 237.2 222.8 229.1 233.3z"/></svg> Importar desde Excel
+
+.pull-left[
+
+.center[
+&lt;img src="img/readxl.png" width="200px"&gt;
+]
+
+`readxl` facilita la transferencia de datos de Excel a R y está diseñado para trabajar con datos tabulares. Admite tanto el formato `.xls` heredado como el formato `.xlsx` moderno basado en `xml`.
+
+]
+
+
+.pull-right[
+
+Para leer un archivo de Excel la función a utilizar es `read_excel()` del paquete `readxl` que es parte del `tidyverse`. Para cargar nuestro archivo:
+
+
+```r
+library(readxl)
+profesores &lt;- read_excel("data/EXCELprofesores.xlsx", 
+    sheet = "DATA", skip = 1)
+```
+
+
+
+También lo podemos hacer con el sistema base de <svg aria-hidden="true" role="img" viewBox="0 0 581 512" style="height:1em;width:1.13em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"/></svg>, aquí no necesitamos cargar ninguna librería. Para esto, nos ubicamos en la barra de herramientas `File -&gt; Import Dataset -&gt; From Excel...`.
+
+]
+
+.footnote[ [readxl.tidyverse.org](https://readxl.tidyverse.org/) ]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M365.3 93.38l-74.63-74.64C278.6 6.742 262.3 0 245.4 0H64C28.65 0 0 28.65 0 64l.0065 384c0 35.34 28.65 64 64 64H320c35.2 0 64-28.8 64-64V138.6C384 121.7 377.3 105.4 365.3 93.38zM336 448c0 8.836-7.164 16-16 16H64.02c-8.838 0-16-7.164-16-16L48 64.13c0-8.836 7.164-16 16-16h160L224 128c0 17.67 14.33 32 32 32h79.1V448zM229.1 233.3L192 280.9L154.9 233.3C146.8 222.8 131.8 220.9 121.3 229.1C110.8 237.2 108.9 252.3 117.1 262.8L161.6 320l-44.53 57.25c-8.156 10.47-6.25 25.56 4.188 33.69C125.7 414.3 130.8 416 135.1 416c7.156 0 14.25-3.188 18.97-9.25L192 359.1l37.06 47.65C233.8 412.8 240.9 416 248 416c5.125 0 10.31-1.656 14.72-5.062c10.44-8.125 12.34-23.22 4.188-33.69L222.4 320l44.53-57.25c8.156-10.47 6.25-25.56-4.188-33.69C252.2 220.9 237.2 222.8 229.1 233.3z"/></svg> Importar desde SPSS y STATA
+
+.pull-left[
+
+.center[
+&lt;img src="img/haven.png" width="200px"&gt;
+]
+
+`haven` permite que R lea y escriba varios formatos de datos utilizados por otros paquetes estadísticos al envolver la fantástica biblioteca ReadStat C escrita por Evan Miller. `haven` es parte del `tidyverse`.
+
+]
+
+
+.pull-right[
+
+.panelset[
+.panel[.panel-name[SPSS]
+## **SPSS**
+Para leer un archivo de SPSS la función a utilizar es `read_sav()` del paquete `haven` que es parte del `tidyverse`. Para cargar nuestro archivo:
+
+
+```r
+library(haven)
+estres &lt;- read_sav("data/SPSSestres.sav")
+```
+]
+
+.panel[.panel-name[STATA]
+## **STATA**
+Para leer un archivo de STATA la función a utilizar es `read_dta()` del paquete `haven` que es parte del `tidyverse`. Para cargar nuestro archivo:
+
+
+```r
+library(haven)
+pasajeros &lt;- read_dta("data/STATApasajeros.dta")
+```
+]
+]
+]
+
+.footnote[ [haven.tidyverse.org](https://haven.tidyverse.org/) ]
+
+&lt;!--
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M448.61 225.62c26.87.18 35.57-7.43 38.92-12.37 12.47-16.32-7.06-47.6-52.85-71.33 17.76-33.58 30.11-63.68 36.34-85.3 3.38-11.83 1.09-19 .45-20.25-1.72 10.52-15.85 48.46-48.2 100.05-25-11.22-56.52-20.1-93.77-23.8-8.94-16.94-34.88-63.86-60.48-88.93C252.18 7.14 238.7 1.07 228.18.22h-.05c-13.83-1.55-22.67 5.85-27.4 11-17.2 18.53-24.33 48.87-25 84.07-7.24-12.35-17.17-24.63-28.5-25.93h-.18c-20.66-3.48-38.39 29.22-36 81.29-38.36 1.38-71 5.75-93 11.23-9.9 2.45-16.22 7.27-17.76 9.72 1-.38 22.4-9.22 111.56-9.22 5.22 53 29.75 101.82 26 93.19-9.73 15.4-38.24 62.36-47.31 97.7-5.87 22.88-4.37 37.61.15 47.14 5.57 12.75 16.41 16.72 23.2 18.26 25 5.71 55.38-3.63 86.7-21.14-7.53 12.84-13.9 28.51-9.06 39.34 7.31 19.65 44.49 18.66 88.44-9.45 20.18 32.18 40.07 57.94 55.7 74.12a39.79 39.79 0 0 0 8.75 7.09c5.14 3.21 8.58 3.37 8.58 3.37-8.24-6.75-34-38-62.54-91.78 22.22-16 45.65-38.87 67.47-69.27 122.82 4.6 143.29-24.76 148-31.64 14.67-19.88 3.43-57.44-57.32-93.69zm-77.85 106.22c23.81-37.71 30.34-67.77 29.45-92.33 27.86 17.57 47.18 37.58 49.06 58.83 1.14 12.93-8.1 29.12-78.51 33.5zM216.9 387.69c9.76-6.23 19.53-13.12 29.2-20.49 6.68 13.33 13.6 26.1 20.6 38.19-40.6 21.86-68.84 12.76-49.8-17.7zm215-171.35c-10.29-5.34-21.16-10.34-32.38-15.05a722.459 722.459 0 0 0 22.74-36.9c39.06 24.1 45.9 53.18 9.64 51.95zM279.18 398c-5.51-11.35-11-23.5-16.5-36.44 43.25 1.27 62.42-18.73 63.28-20.41 0 .07-25 15.64-62.53 12.25a718.78 718.78 0 0 0 85.06-84q13.06-15.31 24.93-31.11c-.36-.29-1.54-3-16.51-12-51.7 60.27-102.34 98-132.75 115.92-20.59-11.18-40.84-31.78-55.71-61.49-20-39.92-30-82.39-31.57-116.07 12.3.91 25.27 2.17 38.85 3.88-22.29 36.8-14.39 63-13.47 64.23 0-.07-.95-29.17 20.14-59.57a695.23 695.23 0 0 0 44.67 152.84c.93-.38 1.84.88 18.67-8.25-26.33-74.47-33.76-138.17-34-173.43 20-12.42 48.18-19.8 81.63-17.81 44.57 2.67 86.36 15.25 116.32 30.71q-10.69 15.66-23.33 32.47C365.63 152 339.1 145.84 337.5 146c.11 0 25.9 14.07 41.52 47.22a717.63 717.63 0 0 0-115.34-31.71 646.608 646.608 0 0 0-39.39-6.05c-.07.45-1.81 1.85-2.16 20.33C300 190.28 358.78 215.68 389.36 233c.74 23.55-6.95 51.61-25.41 79.57-24.6 37.31-56.39 67.23-84.77 85.43zm27.4-287c-44.56-1.66-73.58 7.43-94.69 20.67 2-52.3 21.31-76.38 38.21-75.28C267 52.15 305 108.55 306.58 111zm-130.65 3.1c.48 12.11 1.59 24.62 3.21 37.28-14.55-.85-28.74-1.25-42.4-1.26-.08 3.24-.12-51 24.67-49.59h.09c5.76 1.09 10.63 6.88 14.43 13.57zm-28.06 162c20.76 39.7 43.3 60.57 65.25 72.31-46.79 24.76-77.53 20-84.92 4.51-.2-.21-11.13-15.3 19.67-76.81zm210.06 74.8"/></svg> Importar desde la web
+
+.pull-left[
+
+.center[
+&lt;img src="img/rio.png" width="200px"&gt;
+]
+
+`rio` realiza importación y exportación optimizada de datos. Usa la extensión de archivo de un nombre de archivo para determinar qué tipo de archivo es. 
+
+]
+
+.pull-right[
+
+En esta ocasión leeremos información disponible en la web del [Banco Central del Ecuador](https://www.bce.fin.ec/).
+
+
+```r
+library(rio)
+# Data del Banco Central del Ecuador
+
+# Para guardar la url de descarga en una variable
+urlData &lt;- "https://contenido.bce.fin.ec/documentos/Estadisticas/SectorReal/CuentasProvinciales/Can2020.xlsm" 
+
+# Para importar los datos de la url, escogemos la pestaña
+# sheet: pestaña del documento
+# skip: número de filas omitidas
+# col_names: desea nombre de columnas sea la primera fila
+dataBCE &lt;- import(urlData, sheet = "VAB Cantonal", skip = 6, col_names = TRUE)
+
+```
+]
+
+.footnote[ [github.com/leeper/rio](https://github.com/leeper/rio) ]
+
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M0 64C0 28.65 28.65 0 64 0H229.5C246.5 0 262.7 6.743 274.7 18.75L365.3 109.3C377.3 121.3 384 137.5 384 154.5V448C384 483.3 355.3 512 320 512H64C28.65 512 0 483.3 0 448V64zM336 448V160H256C238.3 160 224 145.7 224 128V48H64C55.16 48 48 55.16 48 64V448C48 456.8 55.16 464 64 464H320C328.8 464 336 456.8 336 448z"/></svg> Otros archivos
+
+* **Excel:** Usando el paquete `openxlsx` con
+`read.xlsx(xlsxFile , sheet , startRow , colNames , skipEmptyRows, rowNames)`
+
+* `foreign` para cargar archivos de SAS, SPSS, Stata: SAS (`read.xport()`), SPSS (`read.spss()`), Stata (`read.dta()`).
+
+* GIS sistemas de información geográfica con `rgal` y `raster`.
+
+* `GoogleSpreadSheets` con googlesheets.
+
+* `data.table` para manejar grandes volúmenes de datos. Existe un curso corto gratuito brindado por la Sociedad Ecuatoriana de Estadística que pueden visitar en el siguiente link: [https://www.youtube.com/Sociedad_Ecuatoriana_Estadistica](https://www.youtube.com/watch?v=s1QnGTk0x8U&amp;list=PL2PpISw8vp_oJlVXpYYowclogCCLtEOfX).
+
+--&gt;
+
+---
+
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:3em;width:3.38em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M128 160C128 142.3 142.3 128 160 128H288C305.7 128 320 142.3 320 160V256C320 273.7 305.7 288 288 288H160C142.3 288 128 273.7 128 256V160zM288 320C323.3 320 352 291.3 352 256V224H416C433.7 224 448 238.3 448 256V352C448 369.7 433.7 384 416 384H288C270.3 384 256 369.7 256 352V320H288zM48 115.8C38.18 106.1 32 94.22 32 80C32 53.49 53.49 32 80 32C94.22 32 106.1 38.18 115.8 48H460.2C469 38.18 481.8 32 496 32C522.5 32 544 53.49 544 80C544 94.22 537.8 106.1 528 115.8V396.2C537.8 405 544 417.8 544 432C544 458.5 522.5 480 496 480C481.8 480 469 473.8 460.2 464H115.8C106.1 473.8 94.22 480 80 480C53.49 480 32 458.5 32 432C32 417.8 38.18 405 48 396.2V115.8zM96 125.3V386.7C109.6 391.6 120.4 402.4 125.3 416H450.7C455.6 402.4 466.4 391.6 480 386.7V125.3C466.4 120.4 455.6 109.6 450.7 96H125.3C120.4 109.6 109.6 120.4 96 125.3z"/></svg>
+# Estructuras de Datos
+
+---
+
+background-image: url("img/estructuras.png")
+background-size: contain
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:1em;width:1.12em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M128 160C128 142.3 142.3 128 160 128H288C305.7 128 320 142.3 320 160V256C320 273.7 305.7 288 288 288H160C142.3 288 128 273.7 128 256V160zM288 320C323.3 320 352 291.3 352 256V224H416C433.7 224 448 238.3 448 256V352C448 369.7 433.7 384 416 384H288C270.3 384 256 369.7 256 352V320H288zM48 115.8C38.18 106.1 32 94.22 32 80C32 53.49 53.49 32 80 32C94.22 32 106.1 38.18 115.8 48H460.2C469 38.18 481.8 32 496 32C522.5 32 544 53.49 544 80C544 94.22 537.8 106.1 528 115.8V396.2C537.8 405 544 417.8 544 432C544 458.5 522.5 480 496 480C481.8 480 469 473.8 460.2 464H115.8C106.1 473.8 94.22 480 80 480C53.49 480 32 458.5 32 432C32 417.8 38.18 405 48 396.2V115.8zM96 125.3V386.7C109.6 391.6 120.4 402.4 125.3 416H450.7C455.6 402.4 466.4 391.6 480 386.7V125.3C466.4 120.4 455.6 109.6 450.7 96H125.3C120.4 109.6 109.6 120.4 96 125.3z"/></svg> Estructuras de Datos
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M368 80h32v32H368V80zM352 32c-17.7 0-32 14.3-32 32H128c0-17.7-14.3-32-32-32H32C14.3 32 0 46.3 0 64v64c0 17.7 14.3 32 32 32V352c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H96c17.7 0 32-14.3 32-32H320c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32V384c0-17.7-14.3-32-32-32V160c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32H352zM96 160c17.7 0 32-14.3 32-32H320c0 17.7 14.3 32 32 32V352c-17.7 0-32 14.3-32 32H128c0-17.7-14.3-32-32-32V160zM48 400H80v32H48V400zm320 32V400h32v32H368zM48 112V80H80v32H48z"/></svg> Vectores
+
+.pull-left[
+El tipo de dato fundamental en R es el vector. Un vector es una secuencia de elementos de datos todos del mismo tipo.
+
+Creamos un vector de dimensión 1:
+
+
+```r
+x &lt;- 4
+is.vector(x)        #¿es vector?
+## [1] TRUE
+```
+
+Hay varias formas de crear vectores, pero una de las más comunes es el operador de concatenación `c()`. 
+]
+
+
+.pull-right[
+A continuación creamos un vector de 4 elementos de tipo numérico:
+
+
+```r
+y &lt;- c(11, 13, 15, 20)
+y                   #para imprimir vector
+## [1] 11 13 15 20
+is.vector(y)
+## [1] TRUE
+```
+
+También podemos crear un vector de tipo caracter de 4 elementos:
+
+
+```r
+z &lt;- c("1", "5", "11", "14")
+z
+## [1] "1"  "5"  "11" "14"
+is.vector(z)
+## [1] TRUE
+```
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M368 80h32v32H368V80zM352 32c-17.7 0-32 14.3-32 32H128c0-17.7-14.3-32-32-32H32C14.3 32 0 46.3 0 64v64c0 17.7 14.3 32 32 32V352c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H96c17.7 0 32-14.3 32-32H320c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32V384c0-17.7-14.3-32-32-32V160c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32H352zM96 160c17.7 0 32-14.3 32-32H320c0 17.7 14.3 32 32 32V352c-17.7 0-32 14.3-32 32H128c0-17.7-14.3-32-32-32V160zM48 400H80v32H48V400zm320 32V400h32v32H368zM48 112V80H80v32H48z"/></svg> Vectores
+
+.pull-left[
+También podemos realizar operaciones entre vectores de la misma dimensión:
+
+
+```r
+w &lt;- c(2, 5, 6, 8)
+w
+## [1] 2 5 6 8
+
+y + 2*w - 3
+## [1] 12 20 24 33
+```
+
+Para conocer la longitud de un vector usamos `length()`.
+
+
+```r
+length(y)
+## [1] 4
+```
+]
+
+.pull-right[
+
+¿Qué sucede cuando el vector no tiene el mismo tipo de datos? Esto se denomina _coerción de tipos de datos_ y es motivo de muchas sorpresas y la razón por la cual es necesario conocer los tipos de datos básicos y cómo R los interpreta. Cuando R encuentra una mezcla de tipos de datos (en este caso numeric y character) para combinarlos en un vector, va a forzarlos a ser del mismo tipo.
+
+
+```r
+otro_vector &lt;- c(2,6,'3')
+
+otro_vector
+## [1] "2" "6" "3"
+```
+
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M368 80h32v32H368V80zM352 32c-17.7 0-32 14.3-32 32H128c0-17.7-14.3-32-32-32H32C14.3 32 0 46.3 0 64v64c0 17.7 14.3 32 32 32V352c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H96c17.7 0 32-14.3 32-32H320c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32V384c0-17.7-14.3-32-32-32V160c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32H352zM96 160c17.7 0 32-14.3 32-32H320c0 17.7 14.3 32 32 32V352c-17.7 0-32 14.3-32 32H128c0-17.7-14.3-32-32-32V160zM48 400H80v32H48V400zm320 32V400h32v32H368zM48 112V80H80v32H48z"/></svg> Vectores
+
+.pull-left[
+Podemos llamar elementos específicos de un vector usando la **indexación**. Por ejemplo:
+
+* `x[]` es una forma de llamar a un elemento específico de un vector.
+* `x[1]` es el primer elemento.
+* `x[3]` es el tercer elemento.
+* `x[-3]` es un vector con todo menos el tercer elemento.
+
+Vamos a intentar indexar los vectores que tenemos:
+
+
+```r
+# reviso los elementos que contiene el vector w
+w     
+## [1] 2 5 6 8
+
+# extraigo el segundo elemento del vector w
+w[2]    
+## [1] 5
+```
+]
+
+.pull-right[
+Para eliminar elementos del vector:
+
+
+```r
+# imprimo el vector w, excepto su tercer elemento
+w[-3]   
+## [1] 2 5 8
+```
+
+Indexamos un conjunto de elementos a la vez, para esto creamos un vector de mayor longitud denominado `secuencia`:
+
+
+```r
+# genero múltiplos de 3 hasta el 30
+secuencia &lt;- seq(3, 30, 3)
+secuencia
+##  [1]  3  6  9 12 15 18 21 24 27 30
+
+# seleccionar todos los múltiplos excepto el 3 y el 30
+secuencia[2:9]
+## [1]  6  9 12 15 18 21 24 27
+```
+
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M368 80h32v32H368V80zM352 32c-17.7 0-32 14.3-32 32H128c0-17.7-14.3-32-32-32H32C14.3 32 0 46.3 0 64v64c0 17.7 14.3 32 32 32V352c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H96c17.7 0 32-14.3 32-32H320c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32V384c0-17.7-14.3-32-32-32V160c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32H352zM96 160c17.7 0 32-14.3 32-32H320c0 17.7 14.3 32 32 32V352c-17.7 0-32 14.3-32 32H128c0-17.7-14.3-32-32-32V160zM48 400H80v32H48V400zm320 32V400h32v32H368zM48 112V80H80v32H48z"/></svg> Vectores
+
+
+```r
+# seleccionar los elementos que están en la posición del 3 al 6 y el que está en la posición 8
+secuencia[c(3:6, 8)]
+## [1]  9 12 15 18 24
+```
+
+Vamos a intentar indexar usan **operadores lógicos**:
+
+
+```r
+## Elegir los números mayores a 30
+secuencia &gt; 30          # las posiciones TRUE son los que contienen números mayores a 30
+##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+secuencia[secuencia &gt; 30]   # regresa los números en las posiciones TRUE
+## numeric(0)
+
+## Combinar operadores lógicos
+## Elegir los números menores a 25 y mayores a 10
+secuencia &lt; 25
+##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE
+secuencia &gt; 10
+##  [1] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+secuencia &lt; 25 &amp; secuencia &gt; 10
+##  [1] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE
+secuencia[secuencia &lt; 25 &amp; secuencia &gt; 10]
+## [1] 12 15 18 21 24
+```
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M64 256V160H224v96H64zm0 64H224v96H64V320zm224 96V320H448v96H288zM448 256H288V160H448v96zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"/></svg> Data.frames
+
+.pull-left[
+Un data frame es un conjunto de vectores que deben cumplir las siguientes propiedades:
+* Las componentes son vectores
+* Cada vector puede ser de un tipo de dato distinto
+* Cada columna es una variable
+* Las columnas tienen el mismo largo
+
+Las filas se denominan observaciones y las columnas se las denomina variables.
+]
+
+.pull-right[
+.center[
+&lt;img src="img/dataframe.png" width="700px"&gt;
+Artwork by @allison_horst
+]
+]
+
+---
+
+.pull-left[
+## <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M64 256V160H224v96H64zm0 64H224v96H64V320zm224 96V320H448v96H288zM448 256H288V160H448v96zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"/></svg> Crear un data.frame
+
+Con la función `data.frame()`, que se conformará de la unión de 3 vectores creados previamente.
+
+
+```r
+nombres &lt;- c("Marcela Cox", "Luis Vargas", "David Mieles")
+edades &lt;- c(24,32,27)
+seguro &lt;- factor(c("IESS", "BMI", "IESS"))
+
+pacientes &lt;- data.frame(nombres, edades, seguro)
+pacientes
+##        nombres edades seguro
+## 1  Marcela Cox     24   IESS
+## 2  Luis Vargas     32    BMI
+## 3 David Mieles     27   IESS
+```
+
+Ver objeto creado en el panel `Environment`.
+]
+
+
+.pull-right[
+## <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M64 256V160H224v96H64zm0 64H224v96H64V320zm224 96V320H448v96H288zM448 256H288V160H448v96zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"/></svg> Cambiar nombre de columnas
+
+* Desde la creación del data.frame:
+
+
+```r
+pacientes2 &lt;- data.frame(N1=nombres, N2=edades, seguro)
+pacientes2
+##             N1 N2 seguro
+## 1  Marcela Cox 24   IESS
+## 2  Luis Vargas 32    BMI
+## 3 David Mieles 27   IESS
+```
+
+* En un data.frame existente con `names()`:
+
+
+```r
+names(pacientes2) &lt;- c("Name", "Age", "Insurance")
+pacientes2
+##           Name Age Insurance
+## 1  Marcela Cox  24      IESS
+## 2  Luis Vargas  32       BMI
+## 3 David Mieles  27      IESS
+```
+]
+
+---
+
+.pull-left[
+## <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M64 256V160H224v96H64zm0 64H224v96H64V320zm224 96V320H448v96H288zM448 256H288V160H448v96zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"/></svg> Navegando por el data.frame
+
+Supongamos que queremos extraer la edad de David Mieles. (indexación)
+
+
+```r
+pacientes[3,2]
+## [1] 27
+```
+
+.center[
+&lt;img src="img/dataframe2.png" width="750px"&gt;
+]
+
+]
+
+.pull-right[
+Podemos seleccionar varias columnas y filas a la vez con `:`.
+
+
+```r
+## seleccionar las 2 últimas columnas y las 2 primeras filas
+pacientes[1:2, 2:3]
+##   edades seguro
+## 1     24   IESS
+## 2     32    BMI
+```
+
+También podemos consultar a R por los valores de una columna entera de nuestro data set con el símbolo `$`.
+
+
+```r
+## seleccionar la columna nombres
+pacientes$nombres
+## [1] "Marcela Cox"  "Luis Vargas"  "David Mieles"
+```
+
+Y aplicar una función a esa columna:
+
+
+```r
+## calcular el promedio de las edades
+mean(pacientes$edades)
+## [1] 27.66667
+```
+
+]
+
+.footnote[ [tibble.tidyverse.org](https://tibble.tidyverse.org/) ]
+
+---
+
+## <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:1em;width:1.12em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M128 160C128 142.3 142.3 128 160 128H288C305.7 128 320 142.3 320 160V256C320 273.7 305.7 288 288 288H160C142.3 288 128 273.7 128 256V160zM288 320C323.3 320 352 291.3 352 256V224H416C433.7 224 448 238.3 448 256V352C448 369.7 433.7 384 416 384H288C270.3 384 256 369.7 256 352V320H288zM48 115.8C38.18 106.1 32 94.22 32 80C32 53.49 53.49 32 80 32C94.22 32 106.1 38.18 115.8 48H460.2C469 38.18 481.8 32 496 32C522.5 32 544 53.49 544 80C544 94.22 537.8 106.1 528 115.8V396.2C537.8 405 544 417.8 544 432C544 458.5 522.5 480 496 480C481.8 480 469 473.8 460.2 464H115.8C106.1 473.8 94.22 480 80 480C53.49 480 32 458.5 32 432C32 417.8 38.18 405 48 396.2V115.8zM96 125.3V386.7C109.6 391.6 120.4 402.4 125.3 416H450.7C455.6 402.4 466.4 391.6 480 386.7V125.3C466.4 120.4 455.6 109.6 450.7 96H125.3C120.4 109.6 109.6 120.4 96 125.3z"/></svg> Funciones básicas para explorar data.frames
+
+.pull-left[
+* **`dim():`** indica las dimensiones del data.frame o tibble, número de filas y columnas.
+
+* **`str():`** muestra de forma compacta la estructura interna de un objeto R.
+
+* **`colnames():`** muestra el nombre de las variables de un data.frame.
+
+* **`head():`** muestra las 10 primeras obervaciones del conjunto de datos.
+
+* **`tail():`** muestra las 4 últimas observaciones del conjunto de datos.
+]
+
+.pull-right[
+* **`summary():`** produce resúmenes de resultados de varias variables. Los resultados dependen de la clase de datos.
+
+* **`sum():`** devuelve la suma de todos los valores presentes en sus argumentos.
+
+* **`min():`** devuelve el valor mínimo de un vector numérico.
+
+* **`max():`** devuelve el valor máximo de un vector numérico.
+]
+
+---
+
+## <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:1em;width:1.12em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M128 160C128 142.3 142.3 128 160 128H288C305.7 128 320 142.3 320 160V256C320 273.7 305.7 288 288 288H160C142.3 288 128 273.7 128 256V160zM288 320C323.3 320 352 291.3 352 256V224H416C433.7 224 448 238.3 448 256V352C448 369.7 433.7 384 416 384H288C270.3 384 256 369.7 256 352V320H288zM48 115.8C38.18 106.1 32 94.22 32 80C32 53.49 53.49 32 80 32C94.22 32 106.1 38.18 115.8 48H460.2C469 38.18 481.8 32 496 32C522.5 32 544 53.49 544 80C544 94.22 537.8 106.1 528 115.8V396.2C537.8 405 544 417.8 544 432C544 458.5 522.5 480 496 480C481.8 480 469 473.8 460.2 464H115.8C106.1 473.8 94.22 480 80 480C53.49 480 32 458.5 32 432C32 417.8 38.18 405 48 396.2V115.8zM96 125.3V386.7C109.6 391.6 120.4 402.4 125.3 416H450.7C455.6 402.4 466.4 391.6 480 386.7V125.3C466.4 120.4 455.6 109.6 450.7 96H125.3C120.4 109.6 109.6 120.4 96 125.3z"/></svg> Funciones básicas para explorar data.frames
+
+.panelset[
+.panel[.panel-name[Encuestados]
+¿Cuántas personas llenaron la encuesta de la situación actual del profesorado de alumnos con necesidades especiales educativas?
+
+
+```r
+dim(profesores)
+## [1] 175  12
+```
+]
+
+.panel[.panel-name[Encuesta]
+
+¿Cuál es la estructura de la encuesta de la situación actual del profesorado de alumnos con necesidades especiales educativas?
+
+
+```r
+str(profesores)
+## tibble [175 × 12] (S3: tbl_df/tbl/data.frame)
+##  $ fecha      : POSIXct[1:175], format: "2020-06-24 19:53:09" "2020-06-24 20:31:49" ...
+##  $ id         : num [1:175] 1 2 3 4 5 6 7 8 9 10 ...
+##  $ sexo       : chr [1:175] "Masculino" "Femenino" "Masculino" "Femenino" ...
+##  $ edad       : num [1:175] 36 31 35 26 35 38 35 45 38 37 ...
+##  $ nivel      : chr [1:175] "BASICO" "SUPERIOR" "SUPERIOR" "INTERMEDIO" ...
+##  $ tiempo     : num [1:175] 3 2 2 1 2 5 2 3 1 3 ...
+##  $ alumnos    : num [1:175] 42 37 30 19 25 43 41 24 27 18 ...
+##  $ alumnos_NEE: num [1:175] 2 1 0 2 2 1 2 1 0 1 ...
+##  $ asignatura : num [1:175] 5 4 4 3 4 5 5 4 4 3 ...
+##  $ asistente  : num [1:175] 5 5 3 5 3 2 5 3 4 3 ...
+##  $ instrucción: num [1:175] 5 3 2 3 2 4 5 4 2 3 ...
+##  $ material   : chr [1:175] "Videos" "Videos" "Videos" "Libro de texto" ...
+```
+]
+
+.panel[.panel-name[Variables]
+
+¿Cuáles son las variables de la encuesta de la situación actual del profesorado de alumnos con necesidades especiales educativas?
+
+
+```r
+colnames(profesores)
+##  [1] "fecha"       "id"          "sexo"        "edad"        "nivel"      
+##  [6] "tiempo"      "alumnos"     "alumnos_NEE" "asignatura"  "asistente"  
+## [11] "instrucción" "material"
+```
+]
+
+.panel[.panel-name[Primeros]
+
+Visualización de las primeras 5 encuestas realizadas al profesorado sobre la situación actual de alumnos con necesidades especiales educativas
+
+
+```r
+head(profesores, n=5)
+## # A tibble: 5 × 12
+##   fecha                  id sexo       edad nivel tiempo alumnos alumn…¹ asign…²
+##   &lt;dttm&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 2020-06-24 19:53:09     1 Masculino    36 BASI…      3      42       2       5
+## 2 2020-06-24 20:31:49     2 Femenino     31 SUPE…      2      37       1       4
+## 3 2020-06-24 21:07:19     3 Masculino    35 SUPE…      2      30       0       4
+## 4 2020-06-24 21:08:00     4 Femenino     26 INTE…      1      19       2       3
+## 5 2020-06-24 21:08:26     5 Femenino     35 SUPE…      2      25       2       4
+## # … with 3 more variables: asistente &lt;dbl&gt;, instrucción &lt;dbl&gt;, material &lt;chr&gt;,
+## #   and abbreviated variable names ¹​alumnos_NEE, ²​asignatura
+```
+]
+
+.panel[.panel-name[Últimos]
+
+Visualización de las últimas 5 encuestas realizadas al profesorado sobre la situación actual de alumnos con necesidades especiales educativas
+
+
+```r
+tail(profesores, n=5)
+## # A tibble: 5 × 12
+##   fecha                  id sexo       edad nivel tiempo alumnos alumn…¹ asign…²
+##   &lt;dttm&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 2020-07-04 08:16:02   171 Femenino     32 SUPE…      8      42       0       3
+## 2 2020-07-05 16:23:13   172 Masculino    25 SUPE…      2      31       2       5
+## 3 2020-07-07 16:52:45   173 Femenino     39 BASI…      2      29       0       5
+## 4 2020-07-07 16:54:27   174 Femenino     39 BASI…      1      32       2       5
+## 5 2020-07-07 17:00:54   175 Masculino    52 INTE…     11      38       0       2
+## # … with 3 more variables: asistente &lt;dbl&gt;, instrucción &lt;dbl&gt;, material &lt;chr&gt;,
+## #   and abbreviated variable names ¹​alumnos_NEE, ²​asignatura
+```
+]
+
+.panel[.panel-name[Total]
+
+¿Cuántos alumnos con necesidades especiales educativas constan en la encuesta?
+
+
+```r
+sum(profesores$alumnos_NEE)
+## [1] 149
+```
+]
+
+.panel[.panel-name[Min]
+
+¿Cuál es la edad del profesor más joven que llenó la encuesta de la situación actual del profesorado de alumnos con necesidades especiales educativas?
+
+
+```r
+min(profesores$edad)
+## [1] 25
+```
+]
+
+.panel[.panel-name[Max]
+
+¿Cuál es la edad del profesor mayor que llenó la encuesta de la situación actual del profesorado de alumnos con necesidades especiales educativas?
+
+
+```r
+max(profesores$edad)
+## [1] 62
+```
+]
+
+.panel[.panel-name[Resumen]
+Genere un resumen de la variable `alumnos` de la encuesta de la situación actual del profesorado de alumnos con necesidades especiales educativas.
+
+
+```r
+summary(profesores$alumnos)
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   18.00   26.00   33.00   32.48   39.00   45.00
+```
+]
+
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M368 80h32v32H368V80zM352 32c-17.7 0-32 14.3-32 32H128c0-17.7-14.3-32-32-32H32C14.3 32 0 46.3 0 64v64c0 17.7 14.3 32 32 32V352c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H96c17.7 0 32-14.3 32-32H320c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32V384c0-17.7-14.3-32-32-32V160c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32H352zM96 160c17.7 0 32-14.3 32-32H320c0 17.7 14.3 32 32 32V352c-17.7 0-32 14.3-32 32H128c0-17.7-14.3-32-32-32V160zM48 400H80v32H48V400zm320 32V400h32v32H368zM48 112V80H80v32H48z"/></svg> Listas
+
+.pull-left[
+Una lista es más simple en algunos aspectos que los otros tipos, porque puedes poner cualquier cosa que tú quieras en ella utilizando la función `list()`:
+
+
+```r
+lista &lt;- list(1, "a", TRUE, 1+4i)
+lista
+## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] "a"
+## 
+## [[3]]
+## [1] TRUE
+## 
+## [[4]]
+## [1] 1+4i
+```
+
+]
+
+
+.pull-right[
+
+Observemos que los elementos de la lista se enumeran por sí solos, aunque también puedes darle nombre a cada elemento:
+
+
+```r
+otra_lista &lt;- list(title = "Numbers", numbers = 1:10, data = TRUE )
+otra_lista
+## $title
+## [1] "Numbers"
+## 
+## $numbers
+##  [1]  1  2  3  4  5  6  7  8  9 10
+## 
+## $data
+## [1] TRUE
+```
+
+]
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M368 80h32v32H368V80zM352 32c-17.7 0-32 14.3-32 32H128c0-17.7-14.3-32-32-32H32C14.3 32 0 46.3 0 64v64c0 17.7 14.3 32 32 32V352c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H96c17.7 0 32-14.3 32-32H320c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32V384c0-17.7-14.3-32-32-32V160c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32H352zM96 160c17.7 0 32-14.3 32-32H320c0 17.7 14.3 32 32 32V352c-17.7 0-32 14.3-32 32H128c0-17.7-14.3-32-32-32V160zM48 400H80v32H48V400zm320 32V400h32v32H368zM48 112V80H80v32H48z"/></svg> Listas
+
+
+
+```r
+# [] muestra nombre y contenido del elemento 2
+lista[2]
+## [[1]]
+## [1] "a"
+
+otra_lista[2]
+## $numbers
+##  [1]  1  2  3  4  5  6  7  8  9 10
+
+# [[]] muestra el contenido del elemento 2
+lista[[2]]
+## [1] "a"
+
+otra_lista[[2]]
+##  [1]  1  2  3  4  5  6  7  8  9 10
+
+# [[]][] muestra el contenido que está en la 4ta posición del elemento 2
+otra_lista[[2]][4]
+## [1] 4
+```
+
+
+---
+
+background-color: var(--azul-claro)
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:3em;width:3.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M64 96c0-35.3 28.7-64 64-64H512c35.3 0 64 28.7 64 64V352H512V96H128V352H64V96zM0 403.2C0 392.6 8.6 384 19.2 384H620.8c10.6 0 19.2 8.6 19.2 19.2c0 42.4-34.4 76.8-76.8 76.8H76.8C34.4 480 0 445.6 0 403.2zM281 209l-31 31 31 31c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-48-48c-9.4-9.4-9.4-24.6 0-33.9l48-48c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM393 175l48 48c9.4 9.4 9.4 24.6 0 33.9l-48 48c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l31-31-31-31c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg>
+## PRÁCTICA
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg> Práctica: ¡5 minutos!
+
+
+1. Del conjunto de datos `profesores`:
+
+   1. Extraer toda la información del 6to encuestado.
+   
+   2. Extraer la siguiente información del 5to encuestado: edad, sexo, nivel y tiempo.
+   
+   3. Extrar toda la información de los encuentados que tienen 10 años o más ejerciendo la docencia.
+   
+   4. Extraer el id, sexo y nivel de los profesores encuestados mayores a 40 años que estén Totalmente de acuerdo (5) que las clases serían mejor con un asistente en clase a tiempo completo.
+
+
+
+---
+
+class: middle, center, inverse
+
+&lt;br&gt;
+&lt;br&gt;
+
+# Estructuras de Datos en R
+### Linda Cabrera Orellana
+
+.pull-left[
+.center[
+### [@socecuest <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg>](https://www.facebook.com/socecuest)
+
+### [@see_estadistica <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>](https://www.instagram.com/see_estadistica/)
+]]
+
+.pull-right[
+.center[
+### [@see_estadistica <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>](https://twitter.com/see_estadistica)
+
+### [@sosecuest <svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M248,8C111.033,8,0,119.033,0,256S111.033,504,248,504,496,392.967,496,256,384.967,8,248,8ZM362.952,176.66c-3.732,39.215-19.881,134.378-28.1,178.3-3.476,18.584-10.322,24.816-16.948,25.425-14.4,1.326-25.338-9.517-39.287-18.661-21.827-14.308-34.158-23.215-55.346-37.177-24.485-16.135-8.612-25,5.342-39.5,3.652-3.793,67.107-61.51,68.335-66.746.153-.655.3-3.1-1.154-4.384s-3.59-.849-5.135-.5q-3.283.746-104.608,69.142-14.845,10.194-26.894,9.934c-8.855-.191-25.888-5.006-38.551-9.123-15.531-5.048-27.875-7.717-26.8-16.291q.84-6.7,18.45-13.7,108.446-47.248,144.628-62.3c68.872-28.647,83.183-33.623,92.511-33.789,2.052-.034,6.639.474,9.61,2.885a10.452,10.452,0,0,1,3.53,6.716A43.765,43.765,0,0,1,362.952,176.66Z"/></svg>](https://t.me/sosecuest)
+]]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
