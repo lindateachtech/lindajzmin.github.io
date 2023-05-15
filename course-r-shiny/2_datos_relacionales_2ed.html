@@ -158,8 +158,7 @@ Muestra las observaciones cuyas claves coinciden en ambos conjuntos de datos:
 
 
 ```r
-df_1 %&gt;% inner_join(df_2, 
-                    by = c("Nombre"="A"))
+inner_join(df_1, df_2, by = c("Nombre"="A"))
 ##   Nombre Edad Ciudad   B          C
 ## 1  Belén   22    Gye 200    Soltera
 ## 2   Anne   26    Gye 200 Divorciada
@@ -173,8 +172,7 @@ Muestra las observaciones del conjunto de la izquierda pero añade los datos del
 
 
 ```r
-df_1 %&gt;% left_join(df_2, 
-                   by = c("Nombre"="A"))
+left_join(df_1, df_2, by = c("Nombre"="A"))
 ##     Nombre Edad Ciudad   B          C
 ## 1    Belén   22    Gye 200    Soltera
 ## 2      Noé   18    Uio  NA       &lt;NA&gt;
@@ -197,8 +195,7 @@ Muestra las observaciones del conjunto de la derecha pero añade los datos del c
 
 
 ```r
-df_1 %&gt;% right_join(df_2, 
-                    by = c("Nombre"="A"))
+right_join(df_1, df_2, by = c("Nombre"="A"))
 ##   Nombre Edad Ciudad   B          C
 ## 1  Belén   22    Gye 200    Soltera
 ## 2   Anne   26    Gye 200 Divorciada
@@ -216,8 +213,7 @@ Muestra las observaciones de ambos conjuntos de datos, cuando los datos no coinc
 
 
 ```r
-df_1 %&gt;% full_join(df_2, 
-                   by = c("Nombre"="A"))
+full_join(df_1, df_2, by = c("Nombre"="A"))
 ##      Nombre Edad Ciudad   B          C
 ## 1     Belén   22    Gye 200    Soltera
 ## 2       Noé   18    Uio  NA       &lt;NA&gt;
@@ -245,8 +241,7 @@ Muestra las observaciones del conjunto de la izquierda que tiene coincidencias c
 
 
 ```r
-df_1 %&gt;% semi_join(df_2, 
-                   by = c("Nombre"="A"))
+semi_join(df_1, df_2, by = c("Nombre"="A"))
 ##   Nombre Edad Ciudad
 ## 1  Belén   22    Gye
 ## 2   Anne   26    Gye
@@ -260,8 +255,7 @@ Muestra las observaciones del conjunto de la izquierda que no tiene coincidencia
 
 
 ```r
-df_1 %&gt;% anti_join(df_2, 
-                   by = c("Nombre"="A"))
+anti_join(df_1, df_2, by = c("Nombre"="A"))
 ##     Nombre Edad Ciudad
 ## 1      Noé   18    Uio
 ## 2 Salvador   21    Cue
