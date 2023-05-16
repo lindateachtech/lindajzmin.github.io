@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Capítulo 2: Transformación de Datos en R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="LINDA CABRERA ORELLANA" />
+    <script src="libs/header-attrs-2.17/header-attrs.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/shareon-1.4.1/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon-1.4.1/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain-0.2.6/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain-0.2.6/shareagain.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <link rel="stylesheet" href="theme-masapp.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+class: center, middle, titular
+background-size: contain
+
+&lt;img style="border-radius: 50%;" src="img/masapp.jpg" width="250px"/&gt;
+# Capítulo 2: Transformación de Datos en R 
+## **CAPACITACIÓN**
+#### LINDA CABRERA ORELLANA
+#### Mayo, 2023
+
+---
+
+
+
+
+.pull-left[
+
+# Contenido del Capítulo 2
+
+- Transformación de datos con `dplyr`
+   * Modificar el nombre de las variables
+   * Seleccionar o descartar variables
+   * Filtrar observaciones
+   * Agregar o editar variables
+   * Agregar variables por casos
+   * Resumir información
+   * Operador pipe
+   * Agrupar o segmentar datos
+]
+
+.pull-right[ 
+
+# Paquetes a utilizar
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg> `library(tidyverse)`
+
+   * <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg> `library(dplyr)`
+   
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg> `library(magrittr)`
+
+]
+
+---
+
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:3em;width:3em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M352 320c88.4 0 160-71.6 160-160c0-15.3-2.2-30.1-6.2-44.2c-3.1-10.8-16.4-13.2-24.3-5.3l-76.8 76.8c-3 3-7.1 4.7-11.3 4.7H336c-8.8 0-16-7.2-16-16V118.6c0-4.2 1.7-8.3 4.7-11.3l76.8-76.8c7.9-7.9 5.4-21.2-5.3-24.3C382.1 2.2 367.3 0 352 0C263.6 0 192 71.6 192 160c0 19.1 3.4 37.5 9.5 54.5L19.9 396.1C7.2 408.8 0 426.1 0 444.1C0 481.6 30.4 512 67.9 512c18 0 35.3-7.2 48-19.9L297.5 310.5c17 6.2 35.4 9.5 54.5 9.5zM80 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg>
+# Transformación de datos con `dplyr`
+
+---
+
+## Funciones del paquete `dplyr`
+
+&lt;br&gt;
+&lt;br&gt;
+
+| Función        |  Acción                                    |
+|:---------------|-------------------------------------------:|
+| `rename()`     | *Modifica el nombre de las variables* |
+| `select()`     | *Selecciona o descarta variables (columnas) de un conjunto de datos* |
+| `filter()`     | *Filtra las observaciones (filas) de interés* |
+| `mutate()`     | *Agrega o edita variables (columnas)* |
+| `case_when()`     | *Agrega variables por casos* |
+| `summarise()`  | *Resume los datos en tablas* |
+| `group_by()`   | *Agrupa o segmenta los datos en función de una variable (columna)* |
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.footnote[ [dplyr.tidyverse.org](https://dplyr.tidyverse.org/) ]
+
+
+---
+
+background-image: url("img/transformacion.png")
+background-size: contain
+
+
+---
+
+## Modificar el nombre de las variables
+
+**`rename()`** se utiliza para cambiar el nombre de las variables. La función tiene el siguiente esquema:
+
+
+```r
+rename(data, columnas... )
+```
+
+Cambiando el nombre de las variables:
+
+
+```r
+ventas &lt;- rename(ventas, VN_12 = VENTAS_NETAS_TARIFA_12,
+                 VN_0 = VENTAS_NETAS_TARIFA_0,
+                 CN_12 = COMPRAS_NETAS_TARIFA_12,
+                 CN_0 = COMPRAS_NETAS_TARIFA_0,
+                 SECTOR = DESCRIPCION)
+```
+
+
+---
+
+## Seleccionar o descartar variables
+
+**`select()`** permite seleccionar rápidamente un subconjunto útil utilizando operaciones basadas en los nombres de las variables. La función tiene el siguiente esquema:
+
+
+```r
+select(data, columnas... )
+```
+
+
+Selecciono las variables que deseo del conjunto de datos `ventas`, mantendrá el orden que yo indique en la selección:
+
+
+```r
+select(ventas, CANTON, SECTOR, VN_0)
+```
+
+
+```
+##         CANTON         CN_0         VN_0 TOTAL_COMPRAS TOTAL_VENTAS
+## 1       VINCES   8817478.46   6095271.51    11431526.2   10713247.8
+## 2       CUENCA  36635839.68  84244866.80   178410417.7  242261471.2
+## 3        QUITO 253023043.53 357900197.21  1706330691.9 2802479221.6
+## 4 ANTONIO ANTE   1734047.69   1862701.89     7477655.5    7268313.4
+## 5      MILAGRO    773512.54   1019975.04     1315247.2    1512072.7
+## 6    SAQUISILI     44340.88     34245.94      146918.4     150966.4
+## 7     SANTIAGO    102669.08    126453.87      673895.1     585612.9
+```
+
+---
+
+## Seleccionar o descartar variables
+
+Otra forma de seleccionar es _deseleccionando_ las variables que no deseo del conjunto de datos `ventas`:
+
+
+
+```r
+select(ventas, -ANIO,-CODIGO_SECTOR_N1,-TOTAL_COMPRAS,-TOTAL_VENTAS)
+```
+
+
+```
+##          PROVINCIA       CANTON        VN_12         VN_0
+## 1         LOS RIOS       VINCES 4.599040e+03   6095271.51
+## 2            AZUAY       CUENCA 4.337427e+05  84244866.80
+## 3        PICHINCHA        QUITO 1.682400e+09 357900197.21
+## 4         IMBABURA ANTONIO ANTE 5.337444e+06   1862701.89
+## 5           GUAYAS      MILAGRO 3.575207e+05   1019975.04
+## 6         COTOPAXI    SAQUISILI 1.011802e+05     34245.94
+## 7  MORONA SANTIAGO     SANTIAGO 4.583148e+05    126453.87
+## 8          BOLIVAR    CHILLANES 2.159726e+05    393783.76
+## 9           GUAYAS    GUAYAQUIL 9.633580e+06 126475568.03
+## 10          EL ORO      MACHALA 4.587097e+06   3775784.55
+## 11        LOS RIOS      QUEVEDO 0.000000e+00     27262.48
+## 12        ORELLANA     ORELLANA 1.261999e+04     52849.72
+## 13          GUAYAS      MILAGRO 9.315510e+03  23214614.32
+## 14          CARCHI       ESPEJO 0.000000e+00      6369.94
+## 15          GUAYAS  PEDRO CARBO 1.879800e+02   2956458.05
+```
+
+
+---
+
+## Filtrar observaciones
+
+En esta parte nos serán de utilidad los operadores de comparación y operadores lógicos. Vamos a delimitar el universo a las observaciones de `ventas` cuyo total de compras sea mayor a 5 millones de dólares con **`filter()`**, es decir construiremos un nuevo conjunto de datos denominado `ventas2` cuyas observaciones sean menores o iguales a 5 millones de dólares.
+
+
+```r
+filter(ventas, TOTAL_COMPRAS &gt; 5000000)
+
+ventas2 &lt;- filter(ventas, TOTAL_COMPRAS &gt; 5000000)
+```
+
+
+```
+##   ANIO MES PROVINCIA       CANTON        VN_12      VN_0 EXPORTACIONES
+## 1 2022 Nov  LOS RIOS       VINCES 4.599040e+03   6095272    2141408.94
+## 2 2022 Dic     AZUAY       CUENCA 4.337427e+05  84244867   10453574.14
+## 3 2022 Feb PICHINCHA        QUITO 1.682400e+09 357900197  558209204.53
+## 4 2022 Feb  IMBABURA ANTONIO ANTE 5.337444e+06   1862702          0.00
+## 5 2022 Feb    GUAYAS    GUAYAQUIL 9.633580e+06 126475568       4483.01
+##       CN_12      CN_0 IMPORTACIONES COMPRAS_RISE TOTAL_COMPRAS TOTAL_VENTAS
+## 1   2607679   8817478           0.0      6368.62      11431526     10713248
+## 2 101176160  36635840    38391608.5   1979078.79     178410418    242261471
+## 3 962568682 253023044   474239672.5   3323943.50    1706330692   2802479222
+## 4   4399080   1734048     1260097.0     84431.28       7477655      7268313
+## 5  42069593  30219851      511049.2    310115.68      73142529    137652501
+```
+
+
+---
+
+## Filtrar observaciones
+
+Vamos a delimitar nuestros datos de `ventas` a las observaciones relacionadas a las actividades de Entretenimiento.
+
+
+```r
+filter(ventas, SECTOR == "ARTES, ENTRETENIMIENTO Y RECREACIÓN.")
+```
+
+
+```
+##   PROVINCIA                  CANTON    VN_12      VN_0 EXPORTACIONES     CN_12
+## 1    MANABI                   MANTA    96.00 306646.95             0 109350.57
+## 2    EL ORO                 MACHALA     0.00  86584.70             0 271720.75
+## 3      NAPO               ARCHIDONA 14387.15      0.00             0  16891.75
+## 4      LOJA                    LOJA   155.33  43189.90             0 107473.50
+## 5  IMBABURA               COTACACHI     0.00   3065.01             0   3177.26
+## 6    MANABI              PORTOVIEJO   228.00  14088.91          5850 595914.32
+## 7 PICHINCHA PEDRO VICENTE MALDONADO     0.00      0.01             0    631.97
+##       CN_0 IMPORTACIONES COMPRAS_RISE                               SECTOR
+## 1 37375.29           344      2308.00 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 2 43561.95             0     17514.07 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 3     0.00             0         0.00 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 4 25176.25             0     17992.88 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 5  1705.00             0         0.00 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 6 42570.61             0      1369.13 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 7     0.00             0         0.00 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+```
+
+
+---
+
+## Filtrar observaciones
+
+Vamos a delimitar nuestros datos de `ventas` a las observaciones relacionadas a las actividades de Entretenimiento o de Información.
+
+
+```r
+filter(ventas, SECTOR == "ARTES, ENTRETENIMIENTO Y RECREACIÓN." |
+           SECTOR == "INFORMACIÓN Y COMUNICACIÓN.")
+```
+
+
+```
+##    PROVINCIA    CANTON    VN_12      VN_0 EXPORTACIONES     CN_12     CN_0
+## 1   LOS RIOS   QUEVEDO     0.00  27262.48             0 104076.80 10405.55
+## 2       LOJA  CATAMAYO     0.00   1346.60             0 240628.55  6918.05
+## 3     MANABI     MANTA    96.00 306646.95             0 109350.57 37375.29
+## 4 CHIMBORAZO    CHAMBO     0.00      0.00             0   4208.23    27.00
+## 5     EL ORO   MACHALA     0.00  86584.70             0 271720.75 43561.95
+## 6     GUAYAS     DURAN     0.00  11403.79          3631 295544.45 29672.78
+## 7       NAPO ARCHIDONA 14387.15      0.00             0  16891.75     0.00
+##   IMPORTACIONES COMPRAS_RISE                               SECTOR
+## 1        143.79         0.00          INFORMACIÓN Y COMUNICACIÓN.
+## 2          0.00      5010.03          INFORMACIÓN Y COMUNICACIÓN.
+## 3        344.00      2308.00 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 4          0.00         0.00          INFORMACIÓN Y COMUNICACIÓN.
+## 5          0.00     17514.07 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 6          0.00         0.00          INFORMACIÓN Y COMUNICACIÓN.
+## 7          0.00         0.00 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+```
+
+
+
+---
+
+## Filtrar observaciones
+
+Vamos a delimitar nuestros datos de `ventas` a las observaciones relacionadas a las actividades de Entretenimiento o de Información que superen las ventas totales de 10 millones de dólares.
+
+
+```r
+filter(ventas, (SECTOR == "ARTES, ENTRETENIMIENTO Y RECREACIÓN." |
+           SECTOR == "INFORMACIÓN Y COMUNICACIÓN.") &amp; 
+           TOTAL_VENTAS &gt; 10000000 )
+```
+
+
+```
+##   PROVINCIA      CANTON     VN_12      VN_0 EXPORTACIONES    CN_12    CN_0
+## 1 PICHINCHA       QUITO  19714.16 8393183.7     325889.20 12842635 3598862
+## 2    GUAYAS   GUAYAQUIL  14471.55 5276205.8     769585.10  6913658 4113782
+## 3    GUAYAS   GUAYAQUIL 453010.64 9885748.4     273327.42 14366675 5913538
+## 4    GUAYAS SAMBORONDON  35023.35  952692.3     817986.94  6054978 2428866
+## 5    GUAYAS   GUAYAQUIL   8644.05 3375280.1     669882.30  5525194 2892094
+## 6 PICHINCHA       QUITO   8383.16 6547375.3      46962.07  5464110 2145872
+## 7    GUAYAS   GUAYAQUIL 415750.90 3544989.4      17496.00  7332227 2272171
+##   IMPORTACIONES COMPRAS_RISE TOTAL_VENTAS                               SECTOR
+## 1     135108.40    207435.91     23898852 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 2      21101.06    413242.59     14491555 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 3     368831.58    361930.24     30747127 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 4          0.00     61973.95     11418093          INFORMACIÓN Y COMUNICACIÓN.
+## 5     264768.46     94017.92     10344109 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 6     196081.60    685791.97     13784646 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 7      10019.20    169191.69     11678938 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+```
+
+
+---
+
+## Filtrar observaciones
+
+Vamos a delimitar nuestros datos de `ventas` a las observaciones relacionadas a las actividades de Entretenimiento o de Información que superen las ventas totales de 10 millones de dólares que sean de la provincia del Guayas.
+
+
+```r
+filter(ventas, (SECTOR == "ARTES, ENTRETENIMIENTO Y RECREACIÓN." |
+                    SECTOR == "INFORMACIÓN Y COMUNICACIÓN.") &amp; 
+           TOTAL_VENTAS &gt; 10000000 &amp; PROVINCIA == "GUAYAS")
+```
+
+
+```
+##   PROVINCIA      CANTON        VN_12      VN_0 EXPORTACIONES    CN_12     CN_0
+## 1    GUAYAS   GUAYAQUIL     14471.55 5276205.8     769585.10  6913658  4113782
+## 2    GUAYAS   GUAYAQUIL    453010.64 9885748.4     273327.42 14366675  5913538
+## 3    GUAYAS SAMBORONDON     35023.35  952692.3     817986.94  6054978  2428866
+## 4    GUAYAS   GUAYAQUIL      8644.05 3375280.1     669882.30  5525194  2892094
+## 5    GUAYAS   GUAYAQUIL    415750.90 3544989.4      17496.00  7332227  2272171
+## 6    GUAYAS   GUAYAQUIL     11950.60 3681121.2       4299.76  5231653  3151847
+## 7    GUAYAS   GUAYAQUIL 142496477.71 2797344.4    7605763.22 79980826 12388887
+##   IMPORTACIONES COMPRAS_RISE TOTAL_VENTAS                               SECTOR
+## 1      21101.06    413242.59     14491555 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 2     368831.58    361930.24     30747127 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 3          0.00     61973.95     11418093          INFORMACIÓN Y COMUNICACIÓN.
+## 4     264768.46     94017.92     10344109 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 5      10019.20    169191.69     11678938 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 6     216804.57    175690.26     12515858 ARTES, ENTRETENIMIENTO Y RECREACIÓN.
+## 7   12942127.18    173321.32    164076316          INFORMACIÓN Y COMUNICACIÓN.
+```
+
+
+---
+
+## Agregar o editar variables
+
+Con **`mutate()`** agregaremos dos variables al conjunto de datos `ventas` que corresponden al TOTAL DE COMPRAS y TOTAL DE VENTAS, aunque ya existen en el conjunto de datos, las nuevas variables serán para compararlas después con las ya existentes.
+
+
+```r
+ventas &lt;- mutate(ventas, TCOMPRAS = round(CN_12 + CN_0 + IMPORTACIONES + COMPRAS_RISE, 2),
+                 TVENTAS = round(VN_0 + VN_12 + EXPORTACIONES, 2))
+```
+
+**Ejercicio 2.1.** Agrega dos columnas que contengan el monto del iva del `\(12\%\)` tanto para las ventas netas como para las compras netas. Te muestro parte de la salida esperada.
+
+
+```
+##   PROVINCIA       CANTON        VN_12      VN_0 EXPORTACIONES       CN_12
+## 1  LOS RIOS       VINCES 4.599040e+03   6095272       2141409   2607679.1
+## 2     AZUAY       CUENCA 4.337427e+05  84244867      10453574 101176160.5
+## 3 PICHINCHA        QUITO 1.682400e+09 357900197     558209205 962568682.0
+## 4  IMBABURA ANTONIO ANTE 5.337444e+06   1862702             0   4399079.5
+## 5    GUAYAS      MILAGRO 3.575207e+05   1019975             0    502186.6
+##          CN_0 IMPORTACIONES COMPRAS_RISE TOTAL_VENTAS        C_IVA        V_IVA
+## 1   8817478.5          0.00      6368.62     10713248    279394.19 4.927543e+02
+## 2  36635839.7   38391608.53   1979078.79    242261471  10840302.91 4.647243e+04
+## 3 253023043.5  474239672.48   3323943.50   2802479222 103132358.79 1.802571e+08
+## 4   1734047.7    1260096.97     84431.28      7268313    471329.95 5.718690e+05
+## 5    773512.5        515.13     39032.86      1512073     53805.71 3.830579e+04
+```
+
+
+---
+
+## Agregar o editar variables
+
+Con **`mutate()`** agregaremos al conjunto de datos `ventas` una columna que contenga la región en que se efectuó cada observación, esto con el objetivo de reducir las categorías de la provincia. Para efectuar este requerimiento necesitamos conocer 2 nuevas funciones:
+
+* `case_when()` Permite definir una variable, de forma tal que tome un valor particular para cada condición establecida. En caso de no cumplir con ninguna de las condiciones establecidas, la variable tomará valor `NA`. La sintaxis de la función es:
+
+
+```r
+# Valores no especificados por default NA
+case_when(condicion_logica1 ~ valor asignado1,
+          condicion_logica2 ~ valor asignado2)
+
+# Se pueden especificar condiciones restantes
+case_when(condicion_logica1 ~ valor asignado1,
+          condicion_logica2 ~ valor asignado2,
+          TRUE ~ valor asignado3)
+```
+
+* `round()` redondeo valores numéricos. La sintaxis de la función es:
+
+
+```r
+# Valores no especificados por default NA
+round(valor_numerico, numero_decimales)
+```
+
+---
+
+## Agregar o editar variables
+
+¡AHORA SÍ! Con **`mutate()`** agregaremos al conjunto de datos `ventas` una columna que indique la región en la que se realiza la transacción.
+
+
+```r
+mutate(ventas, REGION = case_when(PROVINCIA == "LOS RIOS" ~ "COSTA",
+                                  PROVINCIA == "GUAYAS" ~ "COSTA",
+                                  PROVINCIA == "EL ORO" ~ "COSTA",
+                                  PROVINCIA == "ESMERALDAS" ~ "COSTA",
+                                  PROVINCIA == "MANABI" ~ "COSTA",
+                                  PROVINCIA == "SANTA ELENA" ~ "COSTA",
+                                  PROVINCIA == "GALAPAGOS" ~ "INSULAR",
+                                  PROVINCIA == "MORONA SANTIAGO" ~ "ORIENTE",
+                                  PROVINCIA == "NAPO" ~ "ORIENTE",
+                                  PROVINCIA == "ORELLANA" ~ "ORIENTE",
+                                  PROVINCIA == "PASTAZA" ~ "ORIENTE",
+                                  PROVINCIA == "SUCUMBIOS" ~ "ORIENTE",
+                                  PROVINCIA == "ZAMORA CHINCHIPE" ~ "ORIENTE",
+                                  PROVINCIA == "ND" ~ "ND",
+                                  TRUE ~ "SIERRA"))
+```
+
+
+
+
+---
+
+## Resumir información
+
+**`summarise()`** se encarga de colapsar un data.frame en una sola fila, pero es mucho más útil si lo enlazamos con `group_by()`. Veamos el funcionamiento de sólo **`summarise()`**.
+
+&lt;br&gt;
+
+### Total de Compras y Ventas con tarifa 0%
+
+
+```r
+summarise(ventas, "Total de Ventas" = sum(VN_0), 
+          "Total de Compras" = sum(CN_0))
+##   Total de Ventas Total de Compras
+## 1     76066905154      57760100047
+```
+
+
+&lt;br&gt;
+
+**Ejercicio 2.2.** ¿Y el Total de Compras y Ventas con tarifa 0% de la provincia de Guayas?
+
+
+
+---
+
+## Operador `pipe` `%&gt;%`
+
+.pull-left[
+.center[
+&lt;img src="img/magrittr.png" width="200px"&gt;
+]
+
+`magrittr` ofrece un conjunto de operadores que hacen que su código sea más legible.
+
+
+```r
+library(magrittr)
+```
+]
+
+.pull-right[
+* Estructura secuencias de operaciones de datos de izquierda a derecha (a diferencia de desde adentro hacia afuera).
+
+* Minimiza la necesidad de variables locales y definiciones de funciones, y
+
+* Facilita la adición de pasos en cualquier lugar de la secuencia de operaciones.
+
+Puede utilizar el atajo de teclado `Ctrl+Shift+M` para generar el operador `%&gt;%`.
+
+
+```r
+dataset %&gt;% 
+    funcion1() %&gt;% 
+    funcion2() %&gt;%
+    funcion3()
+```
+]
+
+&lt;br&gt;
+
+.footnote[ [magrittr.tidyverse.org](https://magrittr.tidyverse.org/) ]
+
+
+---
+
+.center[
+![](https://erikgahner.dk/img/2022/R_pipe.gif)
+]
+
+
+---
+
+## Resumir información
+
+Podemos empezar a combinar varias funciones.
+
+&lt;br&gt;
+
+### Total de Compras y Ventas con tarifa 0% en la Región COSTA.
+
+
+```r
+ventas %&gt;%
+    filter(REGION == "COSTA") %&gt;% 
+    summarise("Total de Ventas" = sum(VN_0),
+              "Total de Compras" = sum(CN_0))
+##   Total de Ventas Total de Compras
+## 1     41856090390      34970621222
+```
+
+
+---
+
+## Agrupar o segmentar datos
+
+**`group_by()`** realiza operaciones en grupos definidos por variables que por sí sola no dará ningún resultado, por lo que debe ir seguido de la función `summarise()` con una acción apropiada para realizar.
+
+&lt;br&gt;
+
+### Compras y Ventas promedio por región con tarifa 0%
+
+
+```r
+ventas %&gt;%
+    group_by(REGION) %&gt;% 
+    summarise("Ventas Promedio" = mean(VN_0),
+              "Compras Promedio" = mean(CN_0))
+## # A tibble: 5 × 3
+##   REGION  `Ventas Promedio` `Compras Promedio`
+##   &lt;chr&gt;               &lt;dbl&gt;              &lt;dbl&gt;
+## 1 COSTA            2216954.           1852257.
+## 2 INSULAR           469832.            160545.
+## 3 ND                     0                  0 
+## 4 ORIENTE           150588.            116446.
+## 5 SIERRA           1577181.           1048858.
+```
+
+
+
+---
+
+## Agrupar o segmentar datos
+
+### Compras y Ventas promedio mensuales con tarifa 0% de las provincias de Pichincha y Guayas
+
+
+```r
+ventas %&gt;%
+    filter(PROVINCIA == c("PICHINCHA", "GUAYAS")) %&gt;% 
+    group_by(MES, PROVINCIA) %&gt;% 
+    summarise("Ventas Promedio" = mean(VN_0),
+              "Compras Promedio" = mean(CN_0))
+## `summarise()` has grouped output by 'MES'. You can override using the `.groups`
+## argument.
+## # A tibble: 24 × 4
+## # Groups:   MES [12]
+##    MES   PROVINCIA `Ventas Promedio` `Compras Promedio`
+##    &lt;fct&gt; &lt;chr&gt;                 &lt;dbl&gt;              &lt;dbl&gt;
+##  1 Ene   GUAYAS             4458530.           3648568.
+##  2 Ene   PICHINCHA          5518150.           5147078.
+##  3 Feb   GUAYAS             4632683.           4080136.
+##  4 Feb   PICHINCHA         14175548.          10034898.
+##  5 Mar   GUAYAS             2106350.           1435722.
+##  6 Mar   PICHINCHA         10574088.           6780968.
+##  7 Abr   GUAYAS             6672690.           5525116.
+##  8 Abr   PICHINCHA         11986406.           9864439.
+##  9 May   GUAYAS             3832655.           2479745.
+## 10 May   PICHINCHA         10611122.           7676157.
+## # ℹ 14 more rows
+```
+
+
+---
+
+background-color: var(--azul-claro)
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:3em;width:3.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M64 96c0-35.3 28.7-64 64-64H512c35.3 0 64 28.7 64 64V352H512V96H128V352H64V96zM0 403.2C0 392.6 8.6 384 19.2 384H620.8c10.6 0 19.2 8.6 19.2 19.2c0 42.4-34.4 76.8-76.8 76.8H76.8C34.4 480 0 445.6 0 403.2zM281 209l-31 31 31 31c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-48-48c-9.4-9.4-9.4-24.6 0-33.9l48-48c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM393 175l48 48c9.4 9.4 9.4 24.6 0 33.9l-48 48c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l31-31-31-31c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg>
+## PRÁCTICA 5
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg> Práctica: ¡10 minutos!
+
+
+1. Calcule las diferencias entre las columnas total de compras y total de ventas y denomine a estas columnas `Dif_compras` y `Dif_ventas`, respectivamente.
+
+2. Recree el código de la siguiente tabla:
+
+
+|REGION  | Ventas según SRI (en millones)| Ventas (en millones)| Variación en Ventas| Compras según SRI (en millones)| Compras (en millones)| Variación en Compras|
+|:-------|------------------------------:|--------------------:|-------------------:|-------------------------------:|---------------------:|--------------------:|
+|COSTA   |                      103102.46|             65626.39|               36.35|                        86838.96|              86192.78|                 0.74|
+|INSULAR |                         516.33|               346.38|               32.91|                          398.84|                398.06|                 0.20|
+|ORIENTE |                        5213.92|              3499.82|               32.88|                         4046.63|               4009.64|                 0.91|
+|SIERRA  |                      118580.59|             59781.18|               49.59|                        89121.14|              88189.97|                 1.04|
+
+
+---
+
+
+class: middle, center, inverse
+
+&lt;br&gt;
+&lt;br&gt;
+
+# Transformación de Datos en R
+## **CAPÍTULO 2**
+
+&lt;br&gt;
+&lt;br&gt;
+
+.center[
+### [@MasappEC <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg>](https://www.facebook.com/MasappEC/)
+
+### [@Masappdata <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>](https://twitter.com/Masappdata)
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
