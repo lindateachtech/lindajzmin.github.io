@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Sección 1: ¿Cómo importar datos en R?</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Linda Cabrera Orellana" />
+    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/shareon-1.4.1/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon-1.4.1/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain-0.2.6/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain-0.2.6/shareagain.js"></script>
+    <link rel="stylesheet" href="teachtech-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+class: center, middle, titular
+background-size: contain
+
+&lt;img src="img/teachtech.png" width="400px"/&gt;
+# Sección 1: ¿Cómo importar datos en R? 
+## **Curso de R aplicado al SEO**
+### Linda Cabrera Orellana
+#### Marzo, 2024
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M58.9 42.1c3-6.1 9.6-9.6 16.3-8.7L320 64 564.8 33.4c6.7-.8 13.3 2.7 16.3 8.7l41.7 83.4c9 17.9-.6 39.6-19.8 45.1L439.6 217.3c-13.9 4-28.8-1.9-36.2-14.3L320 64 236.6 203c-7.4 12.4-22.3 18.3-36.2 14.3L37.1 170.6c-19.3-5.5-28.8-27.2-19.8-45.1L58.9 42.1zM321.1 128l54.9 91.4c14.9 24.8 44.6 36.6 72.5 28.6L576 211.6v167c0 22-15 41.2-36.4 46.6l-204.1 51c-10.2 2.6-20.9 2.6-31 0l-204.1-51C79 419.7 64 400.5 64 378.5v-167L191.6 248c27.8 8 57.6-3.8 72.5-28.6L318.9 128h2.2z"/></svg> Paquetes a utilizar
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M342.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 402.7 54.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg> `library(tidyverse)`
+
+   * <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg> `library(readr)`
+   
+   * <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg> `library(dplyr)`
+   
+   * <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg> `library(tidyr)`
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M342.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 402.7 54.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg> `library(readxl)`
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M342.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 402.7 54.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg> `library(openxlsx)`
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M342.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 402.7 54.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg> `library(magrittr)`
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M342.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 402.7 54.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg> `library(googlesheets4)`
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M342.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 402.7 54.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg> `library(googleAuthR)`
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M342.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 402.7 54.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg>  `library(Rcrawler)`
+
+* <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M342.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 402.7 54.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"/></svg>  `library(rvest)`
+
+
+
+---
+
+## Proceso del *tidyverse*
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="img/proceso.png" alt="Figura 1. Proceso del tidyverse" width="100%" /&gt;
+&lt;p class="caption"&gt;Figura 1. Proceso del tidyverse&lt;/p&gt;
+&lt;/div&gt;
+
+
+.footnote[ [Understanding the Data Science Lifecycle](https://www.sudeep.co/data-science/2018/02/09/Understanding-the-Data-Science-Lifecycle.html) || [8 Ways to Improve Decision Making](https://www.anblicks.com/blog/8-ways-to-improve-decision-making-and-cut-cost-with-better-data-quality)]
+
+
+---
+
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:3em;width:3em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M128 64c0-35.3 28.7-64 64-64H352V128c0 17.7 14.3 32 32 32H512V448c0 35.3-28.7 64-64 64H192c-35.3 0-64-28.7-64-64V336H302.1l-39 39c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l39 39H128V64zm0 224v48H24c-13.3 0-24-10.7-24-24s10.7-24 24-24H128zM512 128H384V0L512 128z"/></svg>
+# Importar datos
+
+
+---
+
+background-color: var(--azul-claro)
+class: middle, center, inverse
+
+## PREGUNTA
+
+### ¿Cuáles son los tipos de archivos más utilizados por el área de SEO y los especialistas en este campo?
+
+
+---
+
+
+## Importar archivos `.csv`
+
+.pull-left[
+
+.center[
+&lt;img src="img/readr.png" width="150px"&gt;
+]
+
+`readr` lee datos rectangulares de archivos delimitados, como valores separados por comas (CSV) y valores separados por tabuladores (TSV).
+
+`read_csv()` y `read_tsv()` son casos especiales del `read_delim()` más general. Son útiles para leer los tipos más comunes de datos de archivos sin formato, valores separados por comas y valores separados por tabulaciones, respectivamente.
+]
+
+.pull-right[
+
+Para leer un archivo `.csv` en este caso utilizaremos la función `read.csv()` del paquete `readr` que es parte del `tidyverse`. 
+
+Puedes cargar el paquete `tidyverse` o el paquete `readr`, en ambos casos te habilita la función `read.csv()`.
+
+Para cargar nuestro archivo:
+
+
+```r
+library(readr)
+gsc_ene2023 &lt;- read.csv("data/csv/gsc_ene2023.csv")
+
+```
+
+También lo podemos hacer directamente desde la **barra de herramientas**, para esto, seguimos la siguiente ruta `File -&gt; Import Dataset -&gt; From Text (readr)`.
+
+]
+
+.footnote[ [readr.tidyverse.org](https://readr.tidyverse.org/) ]
+
+
+---
+
+## Importar desde Excel
+
+.pull-left[
+
+.center[
+&lt;img src="img/readxl.png" width="150px"&gt;
+]
+
+`readxl` facilita la transferencia de datos de Excel a R y está diseñado para trabajar con datos tabulares. Admite tanto el formato `.xls` heredado como el formato `.xlsx` moderno basado en `xml`.
+
+]
+
+.pull-right[
+
+Para leer un archivo de Excel la función a utilizar es `read_excel()` del paquete `readxl` que es parte del `tidyverse`. 
+
+Para cargar nuestro archivo:
+
+
+```r
+library(readxl)
+
+ga4_ineaf &lt;- read_excel("data/excel/ga4_ineaf.xlsx")
+```
+
+También lo podemos hacer directamente desde la **barra de herramientas**, para esto, seguimos la siguiente ruta `File -&gt; Import Dataset -&gt; From Excel...`.
+
+]
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.footnote[ [readxl.tidyverse.org](https://readxl.tidyverse.org/) ]
+
+
+---
+
+## Importar desde `googlesheets`
+
+.pull-left[
+
+.center[
+&lt;img src="img/googlesheets4.png" width="150px"&gt;
+]
+
+`googlesheets4` proporciona una interfaz R para Google Sheets a través de Sheets API v4. Una API (Interfaz de Programación de Aplicaciones) es un conjunto de reglas y protocolos que permite que diferentes aplicaciones o servicios se comuniquen entre sí. Proporcionan una forma estandarizada y estructurada de enviar y recibir datos, lo que facilita la interoperabilidad entre distintos sistemas.
+
+&lt;!--
+Para datos de cualquier APP de Google, necesitamos autenticarnos mediante uso local en un flujo OAuth2, esto lo hacemos con el paquete `googleAuthR`, que proporciona la autenticación OAuth2 y el servicio JSON.
+--&gt;
+]
+
+.pull-right[
+
+Para leer un archivo de googlesheets la función a utilizar es `read_sheet()` del paquete `googlesheets4`.
+
+Para cargar nuestro archivo:
+
+
+```r
+library(googleAuthR)
+
+options(googleAuthR.client_id = "xxxxxxx.googleusercontent.com")
+options(googleAuthR.client_secret = "xxxxxxxxxxxxxxx")
+options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/analytics.readonly")
+
+gar_auth(email = "xxxxxxxxx@gmail.com")
+gar_set_client("C:/Users/xxxxxxxxx.json")
+
+library(googlesheets4)
+
+maestrias_udv &lt;- read_sheet("https://docs.google.com/spreadsheets/d/1HDfvArp7tv-ug5tRq8AkULS6Q6J7dUpm2LLKQnl569o/edit?usp=sharing")
+
+```
+
+]
+
+&lt;br&gt;
+
+.footnote[ [googlesheets4.tidyverse.org](https://googlesheets4.tidyverse.org/), [googleAuthR](https://code.markedmondson.me/googleAuthR/index.html) ]
+
+
+---
+
+
+## Web Scrapping con `rvest`
+
+.pull-left[
+
+.center[
+&lt;img src="img/rvest.png" width="200px"&gt;
+]
+
+`rvest` ayuda a extraer (o recolectar) datos de páginas web y proporciona una interfaz amigable para cargar páginas web, seleccionar elementos HTML y extraer datos. 
+
+&lt;!--
+https://jandimter.cl/tutoriales/rvest/
+tiene un tutorial fantástico sobre esto
+--&gt;
+
+]
+
+.pull-right[
+
+
+
+```r
+library(rvest)
+library(magrittr)
+
+##  read_html() lee la página web
+inesalud &lt;- read_html("https://www.inesalud.com/")
+
+## xml_structure() observa la estructura del documento HTML que acabamos de leer
+inesalud %&gt;% xml2::xml_structure()
+
+## html_children() toma un nodo y nos devuelve sus hijos de la clase xml_nodeset
+inesalud %&gt;% html_children()
+
+## para convertirlo en texto usamos html_text()
+inesalud %&gt;% html_children() %&gt;% html_text()
+
+## utilizar selectores para navegar en los nodos
+inesalud %&gt;% html_nodes("h1") %&gt;% html_text()
+inesalud %&gt;% html_nodes("h2") %&gt;% html_text()
+inesalud %&gt;% html_nodes("h3") %&gt;% html_text()
+
+```
+]
+
+.footnote[ [rvest.tidyverse.org](https://rvest.tidyverse.org/) ]
+
+
+
+---
+
+
+## Crawling con `Rcrawler`
+
+
+.pull-left[
+
+.center[
+&lt;img src="img/rcrawler.jpg" width="250px"&gt;
+]
+
+`Rcrawler` es un paquete R para rastrear sitios web y extraer datos estructurados que se puede utilizar para una amplia gama de aplicaciones útiles, como minería web, minería de texto, minería de contenido web y minería de estructuras web. Entonces, ¿cuál es la diferencia entre Rcrawler y rvest? rvest extrae datos de una página específica navegando a través de selectores. Sin embargo, Rcrawler atraviesa y analiza automáticamente todas las páginas web de un sitio web y extrae todos los datos que necesita de ellas a la vez con un solo comando.
+
+]
+
+.pull-right[
+
+Con un solo comando, la función `Rcrawler()` le permite:
+
+* Descargar todas las páginas HTML del sitio web.
+
+* Cargar los archivos HTML recopilados a R.
+
+* Extraer DATOS estructurados de todas las páginas del sitio web.
+
+* Eliminar contenidos específicos utilizando términos de búsqueda.
+
+
+
+```r
+library(Rcrawler)
+
+## análisis simple de un sitioweb
+Rcrawler(Website = "https://kschool.com/")
+
+## dar un vistazo a los datos
+view(INDEX)
+
+```
+]
+
+.footnote[ [rcrawler](https://cran.r-project.org/web/packages/Rcrawler/Rcrawler.pdf) ]
+
+
+---
+
+
+class: middle, center, inverse
+
+&lt;br&gt;
+&lt;br&gt;
+
+# ¿Cómo importar datos en R?
+### Linda Cabrera Orellana
+
+### [@lindateachtech <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>](https://twitter.com/lindateachtech)
+
+### [@lindateachtech <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>](https://linkedin.com/in/lindateachtech)
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
