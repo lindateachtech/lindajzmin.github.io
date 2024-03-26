@@ -218,6 +218,74 @@ maestrias_udv &lt;- read_sheet("https://docs.google.com/spreadsheets/d/1HDfvArp7
 
 ---
 
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></svg> Operador `pipe` %&gt;%
+
+.pull-left[
+
+.center[
+&lt;img src="img/magrittr.png" width="200px"&gt;
+]
+
+`magrittr` ofrece un conjunto de operadores que hacen que su código sea más legible.
+
+
+```r
+library(magrittr)
+```
+
+]
+
+--
+
+.pull-right[
+
+* Estructura secuencias de operaciones de datos de izquierda a derecha (a diferencia de desde adentro hacia afuera).
+
+* Minimiza la necesidad de variables locales y definiciones de funciones, y
+
+* Facilita la adición de pasos en cualquier lugar de la secuencia de operaciones.
+
+Puede utilizar el atajo de teclado `Ctrl+Shift+M` para generar el operador `%&gt;%`.
+]
+
+.footnote[ [magrittr.tidyverse.org](https://magrittr.tidyverse.org/) ]
+
+
+---
+
+## <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></svg> Operador `pipe` %&gt;%
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+dataset %&gt;% 
+    funcion1() %&gt;% 
+    funcion2() %&gt;%
+    funcion3()
+```
+]
+
+--
+
+.pull-right[
+
+![](https://erikgahner.dk/img/2022/R_pipe.gif)
+
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></svg> Operador `pipe` %&gt;%
+
+&lt;img src="img/pipe.jpg" width="700" style="display: block; margin: auto;" /&gt;
+
+
+---
+
 
 ## Web Scrapping con `rvest`
 
@@ -311,6 +379,45 @@ view(INDEX)
 ]
 
 .footnote[ [rcrawler](https://cran.r-project.org/web/packages/Rcrawler/Rcrawler.pdf) ]
+
+
+---
+
+## XML sitemaps con `xsitemap`
+
+.pull-left[
+
+.center[
+&lt;img src="img/xsitemap.jpg" width="250px"&gt;
+]
+
+`xsitemap` es un paquete que te ayudará a verificar en un par de minutos todos sus mapas de sitio XML. Esto le permitirá asegurarse de que todo esté configurado correctamente. También puedes usarlo para comprobar los mapas de sitio XML de la competencia.
+
+`xsitemapGet()` buscará primero las URL del mapa del sitio XML. Verificará el archivo `robots.txt` para ver si una URL de mapa de sitio XML está declarada explícitamente, la mayor parte del tiempo, encontrará la URL del mapa del sitio xml, si no, todo termina aquí.
+
+]
+
+.pull-right[
+
+Luego, se recupera la URL del mapa del sitio xml y se extraen las URL. Si se trata de un mapa de sitio XML clásico, se generará y devolverá un marco de datos (un tipo especial de matriz). Si se trata de un mapa de sitio XML de índice, el proceso volverá desde el principio con todos los mapas de sitio XML que contiene. Esto también funciona para mapas de sitio XML indexados.
+
+`xsitemapCheckHTTP()` le permite rastrear las URL del mapa del sitio y verificar si sus páginas web envían códigos 200 HTTP adecuados.
+
+
+
+```r
+install.packages("devtools")
+library(devtools)
+install_github("pixgarden/xsitemap")
+library(xsitemap)
+
+## análisis simple de un sitioweb
+xsitemap_urls &lt;- xsitemapGet("https://www.ceupe.mx/")
+
+```
+]
+
+.footnote[ [xsitemap](https://www.gokam.co.uk/xsitemap-package/) ]
 
 
 ---
