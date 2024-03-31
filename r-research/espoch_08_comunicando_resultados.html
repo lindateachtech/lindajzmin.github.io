@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Sección 8: Comunicando Resultados con R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Linda Cabrera Orellana" />
+    <script src="libs/header-attrs-2.17/header-attrs.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/shareon-1.4.1/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon-1.4.1/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain-0.2.6/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain-0.2.6/shareagain.js"></script>
+    <link rel="stylesheet" href="see-theme2E.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+class: center, middle, titular
+background-size: contain
+
+&lt;img src="img/see.png" width="250px"/&gt;
+# Sección 8: Comunicando Resultados con R 
+## **CURSO DE MANEJO DE DATOS Y REPORTERÍA CON R**
+#### Linda Cabrera Orellana
+#### Marzo, 2024
+
+---
+
+class: middle, center, inverse
+
+&lt;img src="img/rmarkdown.png" width="150px"&gt;
+# `rmarkdown`
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Instalación de `rmarkdown`
+
+
+Aquí aprenderemos sobre el paquete `rmarkdown`, el cual es una herramienta para integrar texto, código y resultados. Puedes usarlo en modo notebook, es decir, en un entorno interactivo de ejecución de código para la comunicación de resultados de estudios o análisis científicos y para divulgación científica. 
+
+Con `rmarkdown` se pueden obtener una gran variedad de salidas que puedes generar usando la librería, incluyendo dashboards (tableros de control), sitios web, y libros.
+
+Para que `rmarkdown` funcione debes tener instalados los siguientes paquetes:
+
+
+```r
+install.packages("tinytex", dependencies = TRUE)
+install.packages("knitr", dependencies = TRUE)
+install.packages('rmarkdown')
+
+# para instalar LaTeX para reportes PDF
+tinytex::install_tinytex()
+```
+
+&lt;br&gt;
+
+.footnote[[https://www.rstudio.com/resources/cheatsheets/](https://www.rstudio.com/resources/cheatsheets/)]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Primeros pasos
+
+.pull-left[
+Para crear un archivo Rmarkdown debes ir a `File -&gt; New File -&gt; Rmarkdown...`, aquí te aparecerá una ventana donde deberás indicar el nombre del archivo que deseas crear y por el momento elegiremos `html`, y creamos con OK.
+
+Contiene tres tipos importantes de contenido:
+
+1. Un encabezado YAML rodeado de `---`
+
+2. Bloques de código de R rodeados de ` ``` `
+
+3. Texto mezclado con formateos de texto simple como **negritas** e _itálicas_.
+]
+
+.pull-right[
+&lt;img src="img/creaRmark.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Primeros pasos
+
+&lt;img src="img/primerRmarkd.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Encabezado YAML
+
+**YAML** es la sigla en inglés de la frase *“yet another markup language”*, que significa *“otro lenguaje de marcado más”*. Este lenguaje de marcado está diseñado para representar datos jerárquicos de modo tal que sea fácil de escribir y leer para humanos. 
+
+R Markdown lo utiliza para controlar muchos detalles del output. Este encabezado determina los parámetros generales de formato para el documento a compilar. 
+
+En lenguaje computacional se entiende como los metadatos del documento; esto es, información que define el formato del archivo resultante, más no su contenido:
+
+- **Título (title).** Texto entre comillas que servirá de título general del documento.
+
+- **Subtítulo (subtitle).** Texto entre comillas que servirá de subtítulo general del documento.
+
+- **Autor (author).** Texto entre comillas para indicar el nombre del o los autores.
+
+- **Resumen (abstract).** Texto entre comillas para indicar el resumen del documento.
+
+- **Fecha (date).** Campo para indicar la fecha. En el texto, con la expresión *today*, se solicita que imprima la fecha actual según el calendario del sistema operativo.
+
+- **Bibliografía (bibliography).** Indicar al documento que contienen las referencias en formato BiBTeX.
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Encabezado YAML
+
+- **Formato de bibliografía (csl).** Nombre de un archivo de extensión .csl para indicar el formato de referencias en el cuerpo del texto y el listado de bibliografía al final del documento.
+
+- **Formato de salida (output).** Documento de salida.
+
+
+Los argumentos dentro del apartado resultado (`output`) son los siguientes:
+
+- **pdf_document:** indica el formato preestablecido para compilar el documento. En este caso, se trata de un PDF. Puede ser *html_document* o *word_document*.
+
+- **number_sections:** si está definido como yes define que se numerarán los títulos y sutítulos a lo largo del documento, de manera automática y correlativa.
+
+- **toc:** es la abreviación de table of contents.
+
+- **toc_float:** indica si desea un índice flotante.
+
+- **theme:** Otra característica que puede ser modificada consiste en el tema o tipo de plantilla visual en que se muestra el contenido. Entre las opciones disponibles de “temas”, se encuentran los siguientes valores: cerulean, journal, flatly, readable, spacelab, united y cosmo. En la página de [Andrew Zieffler](https://rpubs.com/gustavomtzv/874870) se puede dar un vistazo a los temas.
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Encabezado YAML
+
+## Opciones LaTeX
+
+Muchos aspectos de la plantilla LaTeX utilizada para crear documentos PDF se pueden personalizar utilizando metadatos YAML de nivel superior (tenga en cuenta que estas opciones no aparecen debajo de la sección de salida, sino que aparecen en el nivel superior junto con el título, el autor, etc.) . Por ejemplo:
+
+* **fontsize:**	Tamaña de la fuente (10pt, 11pt, or 12pt).
+
+* **documentclass:**	Clases de documentos de LaTeX (article, book, etc.)
+
+* **linkcolor, urlcolor, citecolor:**	Colores para links externos, internos y citas.
+
+Puedes ver todas las opciones para personalizar la salida LaTex (pdf) en [https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf).
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg>  Encabezado YAML
+
+### Ejercicio 8.1
+
+1. En esta primera parte vamos a crear el siguiente [documento](https://rpubs.com/lindajazmin1987/practica-capitulo5) `.html` publicable. Crear un archivo R Markdown vacío con el nombre "resumen_modulo". Note que cuando crea el archivo la extensión de este archivo es `.Rmd`.
+
+2. Crea el encabezado YAML con los siguientes datos.
+
+
+```r
+---
+title: "Resumen de R para el Manejo de Datos"
+subtitle: "Programa Internacional de Estadística Aplicada  a la Investigación Científica"
+author: "Linda Cabrera"
+date: "2023-03-27"
+output: 
+  html_document:
+    toc: TRUE               # incluye o no el indice
+    toc_float: TRUE         # incluye o no indice flotante
+    theme: "flatly"         # especifica el tema Bootstrap
+    highlight: textmate     # resaltado de sintaxis
+    number_sections: TRUE   # enumerar las secciones
+---
+```
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Formateo de texto
+
+
+Existe una hoja de referencia útil que la obtienes en la ruta `Help &gt; Markdown Quick Reference`. Esta hoja brinda un guía completa del formato que podemos utilizar para los textos con `rmarkdown`.
+
+
+## Encabezados o Títulos
+
+Para escribir un encabezado o título en un documento debes hacerlo con el signo numeral ` \# ` de la siguiente manera:
+
+
+```r
+# Título 1
+## Subtítulo 1.1
+## Subtítulo 1.2
+### Subsubtítulo 1.2.1
+
+# Título 2
+
+# Título 3
+```
+
+Para el título principal utiliza un signo numeral, para subtítulos utiliza dos signos numerales seguidos, y así sucesivamente.
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Formateo de texto
+
+## Listas
+
+Podemos crear listas ordenadas y no ordenadas.
+
+Listas ordenadas:
+
+
+```r
+1. Item 1
+2. Item 2
+    1. Item 2a
+    2. Item 2b
+```
+ 
+
+Listas no ordenadas:
+
+
+```r
+- Item 1
+- Item 2
+    + Item 2a
+    + Item 2b
+```
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Formateo de texto
+
+
+## Citas
+
+Para escribir citas puedes utilizar el paquete `tufte` y escribir la cita de la siguiente manera:
+
+
+```r
+&gt; "Un simple gráfico ha brindado más información a la mente del analista de datos que cualquier otro dispositivo."
+&gt; `r tufte::quote_footer('--- John Tukey')`
+```
+
+Luego tendrás este estilo de cita:
+
+&gt; "Un simple gráfico ha brindado más información a la mente del analista de datos que cualquier otro dispositivo."
+&gt; &lt;footer&gt;--- John Tukey&lt;/footer&gt;
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Formateo de texto
+
+## Links
+
+Para incluir un link que al hacer clic te direccione a una dirección http, debes escribir el texto entre corchetes y seguido el link entre paréntesis.
+
+
+```r
+[link de Rstudio](https://www.rstudio.com/)
+```
+
+### Ejercicio 8.2
+
+
+```r
+## Links
+
+Para iniciar la clase de Introducción a RStudio:
+
+1. Descargamos RStudio en el siguiente [link](https://www.rstudio.com/products/rstudio/download/)
+
+2. Instalamos RStudio en nuestras computadoras
+```
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Formateo de texto
+
+## Expresiones Matemáticas 
+
+Expresión matemática encerrada en un signo de dólar, la escribe en la misma línea `$x^2+5$` y queda así `\(x^2+5\)`, mientras si está encerrada en dos signos de dólar, la escribe en la siguiente línea y centrada: `$$x^2+5$$`
+
+Puedes encontrar más fórmulas en el siguiente [link1](http://metodos.fam.cie.uva.es/~latex/apuntes/apuntes3.pdf) y [link2](https://aprender-uib.github.io/AprendeR2/extras-de-r-markdown.html#f%C3%B3rmulas-matem%C3%A1ticas).
+
+### Ejercicio 8.3
+
+
+```r
+- En R podemos calcular: $$\sqrt{23^3+10}-\dfrac{2}{3}+ \ln(1) - e^3$$
+```
+
+- En R podemos calcular: `$$\sqrt{23^3+10}-\dfrac{2}{3}+ \ln(1) - e^3$$`
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Formateo de texto
+
+## Énfasis
+
+Puedes hacer las cosas en **negrita** usando dos asteriscos, como esto: `**negrita**`, hacer cosas en *cursiva* usando guiones bajos, como esto: `_italicas_` o escribir ~~tachado~~, como esto: `~~tachado~~`. También puedes escribir código en línea utilizando las comillas ` `` `.
+
+
+## Imágenes
+
+Puedes incluir un archivo de imagen usando este código: `![caption](http://url/for/file)`, entre paréntesis debes indicar la dirección de la imagen. Por ejemplo:
+
+
+```r
+![Insertar imagen](img/rmarkdown_rockstar.png)
+```
+
+![Insertar imagen](img/rmarkdown_rockstar.png)
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Formateo de texto
+
+## Incluir bibliografía
+
+Para que la bibliografía conecte, deberás crear un archivo tipo BibTeX Database (.bib) donde especificarás los datos del o de los artículo/s o libro/s.
+
+En el encabezado YAML del documento debes agregar las opciones `bibliography: nombre_archivo.bib` donde debes especificar el nombre del archivo .bib que debe estar en el mismo directorio que estás trabajando y `csl: apa.csl` donde especificas el formato de la bibliografía, en este caso he utilizado el formato apa, puedes encontrar más estilos de bibliografía en [https://github.com/citation-style-language/styles](https://github.com/citation-style-language/styles).
+
+### Ejercicio 8.4
+
+
+```r
+## Incluir Bibliografía
+
+Este curso nos da una introducción práctica a la manipulación de datos y a las herramientas que provee el entorno `tidyverse`, puedes leer más en _R para Ciencia de Datos_ de @hadley2021. Si deseas aprender más acerca de la teoría subyacente, puede que te guste el artículo Tidy Data de @JSSv059i10 publicado en la revista [Journal of Statistical Software](http://www.jstatsoft.org/v59/i10/paper).
+```
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Fragmentos de código R
+
+**Markdown** es interesante y útil, pero el poder real proviene de la mezcla entre **markdown** y fragmentos (chunks) de código **R**. Cuando se compila el documento, el código **R** se ejecutará; si producen figuras, las figuras se insertarán en el documento final.
+
+Los chunks del código principal se ven así:
+
+&lt;pre&gt;
+&amp;#96;&amp;#96;&amp;#96;{r load_data, echo = TRUE}
+gapminder &lt;- read.csv("~/Desktop/gapminder.csv")
+&amp;#96;&amp;#96;&amp;#96;
+&lt;/pre&gt;
+
+Es decir, coloca un fragmento de código **R** entre comillas  &lt;code&gt;&amp;#96;&amp;#96;&amp;#96;{r chunk_name, option1 = ..., ...}&lt;/code&gt; y &lt;code&gt;&amp;#96;&amp;#96;&amp;#96;&lt;/code&gt;. 
+
+Es una buena idea darle a cada fragmento un nombre, ya que te ayudarán a corregir los errores y se recomienda que los nombres de archivo estén basados en el nombre del fragmento de código que los produjo.
+
+Adicionalmente, se pueden incluir opciones al chunk que van a configurar los resultados que queremos obtener.
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Fragmentos de código R
+
+Hay una variedad de opciones quen afectan la forma en que los chunks de código son tratados:
+
+- `echo=TRUE` o `echo=FALSE` muestra el código o no, respectivamente.
+- `results="hide"` evita que se impriman los resultados.
+- `eval=TRUE` o `eval=FALSE` evalúa o no el código, respectivamente. Cuando se evalúan los resultados, también se muestran.
+- `warning=FALSE` y `message=FALSE` oculta cualquier advertencia o mensajes producidos en la ejecución del código.
+
+A menudo habrá opciones particulares que querrás usar
+repetidamente; para esto, luego de definr el encabezado YAML puede establecer las opciones de chunks _global_, de esta forma:
+
+&lt;pre&gt;
+&amp;#96;&amp;#96;&amp;#96;{r global_options, echo=FALSE}
+knitr::opts_chunk$set(fig.path="img/", message=FALSE, warning=FALSE, 
+                      echo=FALSE, results="hide", fig.width=11)
+&amp;#96;&amp;#96;&amp;#96;
+&lt;/pre&gt;
+
+Es recomendable que en este chunck de configuración cargue los paquetes y los archivos que usará en el documento.
+
+La opción `fig.path` define dónde se guardarán las figuras. El `/` aquí es realmente importante; sin él, las figuras se guardarían en el lugar estándar, pero solo con los nombres que están con `Figs`.
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Fragmentos de código R
+
+### Ejercicio 8.5
+
+**Código NO se ve, SI se evalúa, NO se muestran resultados:** Incluye este chunk al inicio del texto, luego del encabezado YAML, con los siguientes argumentos &lt;code&gt;{r configuracion, echo=FALSE, eval=TRUE, include=FALSE}&lt;/code&gt;:
+
+
+```r
+library(knitr)
+library(tidyverse)
+library(readxl)
+# configurar opciones por default
+opts_chunk$set(echo=FALSE,
+               warning=FALSE,
+               message=FALSE)
+```
+
+**Código SI se ve, SI se evalúa:** Incluye este chunk al final con los siguientes argumentos &lt;code&gt;{r leer_datos, echo=TRUE, eval=TRUE}&lt;/code&gt;:
+
+
+```r
+## cargamos el conjunto de datos profesores2
+profesores &lt;- read_excel("data/EXCELprofesores2.xlsx")
+```
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Fragmentos de código R
+
+### Ejercicio 8.5
+
+**Código NO se ve, SI se evalúa:** Incluye este chunk con los siguientes argumentos &lt;code&gt;{r indicadores, echo=FALSE, eval=TRUE}&lt;/code&gt;:
+
+
+```r
+profesores %&gt;% 
+    group_by(nivel) %&gt;% 
+    summarise(Profesores = n(),
+              Estudiantes = sum(alumnos),
+              'Tiempo docencia Promedio' = round(mean(tiempo)),
+              'Edad Promedio' = round(mean(edad)))%&gt;% 
+    rename("Nivel que imparte docencia"=nivel)
+```
+
+**Código SI se ve, NO se evalúa:** Incluye el mismo chunk anterior pero con los siguientes argumentos &lt;code&gt;{r indicadores2, echo=TRUE, eval=FALSE}&lt;/code&gt;:
+
+El paquete `knitr` provee casi 60 opciones que puedes usar para personalizar tus bloques de código. Puedes ver la lista completa en [Opciones de bloques](http://yihui.name/knitr/options/).
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Tablas
+
+Podemos incluir tablas de dos formas: creándolas o haciendo consultas de la data. 
+
+1. Para crear una tabla, podemos formarla como sigue:
+
+
+```r
+| Derecha | Izquierda | Default | Centro |
+|--------:|:----------|---------|:------:|
+| 12      | 12        | 12      | 12     |
+| 123     | 123       | 123     | 123    |
+| 1       | 1         | 1       | 1      |
+```
+
+| Derecha | Izquierda | Default | Centro |
+|--------:|:----------|---------|:------:|
+| 12      | 12        | 12      | 12     |
+| 123     | 123       | 123     | 123    |
+| 1       | 1         | 1       | 1      |
+
+
+2. Existen paquetes que convierten las consultas de datos en formatos de tablas, uno de esos es el paquete `knitr`. Si desea darle un formato diferente a las tablas, puede ampliar la información de los paquetes [Package kable y kableExtra](https://rpubs.com/JeisonAlarcon/Tables-R). En el siguiente link de [Pedro J. Pérez](https://perezp44.github.io/intro-ds-20-21-web/tutoriales/tt_08_tablas-Rmarkdown.html) de la Universidad de Valencia encontrarás información sobre otros paquetes para hacer Tablas en Rmarkdown. 
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Tablas
+
+En este caso usaremos el paquete `knitr` con la función `kable()` para generar una tabla con mejor formato:
+
+
+```r
+kable(
+    profesores %&gt;% 
+    group_by(nivel) %&gt;% 
+    summarise(Profesores = n(),
+              Estudiantes = sum(alumnos),
+              'Tiempo docencia Promedio' = round(mean(tiempo)),
+              'Edad Promedio' = round(mean(edad)))%&gt;% 
+    rename("Nivel que imparte docencia"=nivel),
+    caption = "Tabla 1. Indicadores según la encuesta XYZ"
+)
+```
+
+&lt;table&gt;
+&lt;caption&gt;Tabla 1. Indicadores según la encuesta XYZ&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Nivel que imparte docencia &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Profesores &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estudiantes &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Tiempo docencia Promedio &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Edad Promedio &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BASICO &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 98 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3148 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; INTERMEDIO &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1398 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SUPERIOR &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1138 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> Gráficos
+
+Una de las mejores cosas que puede hacer en `rmarkdown` es incluir el código de sus gráficos y que se generen directamente en R. Intenta agregando el último gráfico del capítulo anterior.
+
+.pull-left[
+
+```r
+library(ggthemes)
+
+# visualizar a los profesores que más ganan por nivel
+mas_ganan &lt;- profesores %&gt;% group_by(nivel) %&gt;%  filter(row_number(desc(salario))==1)
+
+## gráfico de dispersión
+profesores %&gt;% 
+    ggplot(aes(x = edad, y = tiempo, size = salario, color = sexo)) +
+    geom_point(alpha = 0.5) +
+    geom_text(data = mas_ganan, aes(label = paste("Codigo: ", cod, "- Salario: $", salario)), size = 3, nudge_x = -3, color = "black") +
+    geom_point(data = mas_ganan, shape = 21, color = "black", stroke = 1.2) +
+    scale_size(breaks = floor(seq(500, 4500, length.out = 5)),
+               limits = c(200, 4700), range = c(2, 10)) +
+    scale_color_manual(values = paleta_simpson) +
+    labs(x = "Edad del Profesor", y = "Tiempo de Docencia",
+         title = "Edad vs Tiempo de docencia de los Profesores",
+         subtitle = "Gráfico de Dispersión", color = "Sexo del Profesor", size = "Salario del Profesor") +
+    theme_pander() +
+    theme(legend.position = "bottom", legend.box = "vertical")
+```
+
+]
+
+.pull-right[
+![](espoch_08_comunicando_resultados_files/figure-html/grafico2-1.png)&lt;!-- --&gt;
+]
+
+
+---
+
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:3em;width:3.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg>
+# Más formatos `rmarkdown`
+
+---
+
+# Tipos de formatos
+
+En el siguiente link puede encontrar varios formatos para todas las clases de documentos que genera `rmarkdown` [Formatos de R Markdown](https://rmarkdown.rstudio.com/formats.html).
+
+- **Salida `.html`:** La salida para este reporte es `output: html_document`. Los documentos pueden ser publicados en RPubs, GitHub, en un sitio web personal o Google drive. Debes crear una cuenta en RPubs [https://rpubs.com/users/new](https://rpubs.com/users/new). Haremos una prueba en RPubs con el documento 'practica1_Rmarkdown.Rmd'.
+
+- **Salida `.docx`:** Para que se genere una salida de un archivo con extensión `.docx` el output en el encabezado YAML es `output: word_document`. Haremos una prueba en RPubs con el documento 'practica2_WORD.Rmd'.
+
+- **Salida `.pdf`:** La salida para este documento es `output: pdf_document`. Haremos una prueba en RPubs con el documento 'practica3_PDF.Rmd'.
+
+
+---
+
+# Presentaciones, Libros y más...
+
+- **LaTeX Beamer:** Salida por default es: `output: beamer_presentation:`. Probemos cargando el archivo 'prueba_beamer.Rmd'. Puedes encontrar más temas en [beamer-theme-matrix](https://hartwork.org/beamer-theme-matrix/).
+
+- **Power Point:** Salida por default es: `output: powerpoint_presentation`. Probemos creando un archivo de nombre 'prueba_PPT.Rmd'.
+
+- **Paquete `xaringan`:** nuevos estilos de presentaciones.
+
+- **Paquete `bookdown`:** facilita la escritura de libros y artículos/informes de formato largo con R Markdown. Revisar [bookdown: Authoring Books and Technical Documents with R Markdown](https://bookdown.org/yihui/bookdown/). Obtener la plantillas en [github.bookdown](https://github.com/rstudio/bookdown).
+
+- **Paquete `pagedown`:** plantillas de hojas de vida, tesis, artículo de la Journal of Statistical Software, entre otros.
+
+- **Paquete `vitae`:** plantillas de hojas de vida.
+
+
+&lt;!--
+
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:3em;width:2.91em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+# GitHub y RStudio
+
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> Conectar RStudio y GitHub
+
+Git es un sistema de control de versiones que le permite realizar un seguimiento de quién realizó cambios y cuándo, y tiene opciones para actualizar fácilmente una versión compartida o pública de su código en github.com.
+
+## Para conectar con GitHub y RStudio
+
+1. Crear una cuenta en [GitHub](https://github.com/).
+
+2. Crear un token personal, las instrucciones se encuentran en [https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+
+3. Descargar e instalar Git, los pasos a seguir están en [https://carpentries.github.io/workshop-template/#shell](https://carpentries.github.io/workshop-template/#shell).
+
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> Conectar RStudio y GitHub
+
+## Para conectar con GitHub y RStudio
+
+* Luego ir a `Tools` y escoger la opción `Global Options...`, buscamos la pestaña `Git/SVN` y debemos asegurarnos de tener la dirección del ejecutable de Git.
+
+* En caso de no conocer la ubicación del ejecutable de Git, podemos averiguarlo desde la Terminal con `$ which git.exe`.
+
+* Puedo crear un nuevo proyecto o elegir uno existente, y luego automáticamente en el panel de environment aparecerá una pestaña que dice `Git` y un botón en la barra de herramientas que indica `Git`.
+
+* Ver más en [https://swcarpentry.github.io/git-novice-es/14-supplemental-rstudio/index.html](https://swcarpentry.github.io/git-novice-es/14-supplemental-rstudio/index.html).
+
+--&gt;
+
+---
+
+# <svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> Algunos sitios de interés
+
+- [knitr in a knutshell](https://kbroman.org/knitr_knutshell/)
+
+- [R Markdown documentation](https://rmarkdown.rstudio.com/)
+
+- [Escribir un
+Trabajo Fin de Estudios
+con R Markdown](http://destio.us.es/calvo/memoriatfe/MemoriaTFE_PedroLuque_2017Nov_imprimir2caras.pdf)
+
+- [“Utilizando	LaTeX en	RStudio](http://umh1480.edu.umh.es/wp-content/uploads/sites/44/2013/02/teim_sesion_001_latex_en_RStudio_16_17.pdf)
+
+- [Chunk options and package options](https://yihui.org/knitr/options/)
+
+- [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+
+---
+
+class: middle, center, inverse
+
+&lt;br&gt;
+&lt;br&gt;
+
+# Comunicando resultados con R
+### Linda Cabrera Orellana
+
+
+.pull-left[
+.center[
+[@socecuest <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg>](https://www.facebook.com/socecuest)
+
+[@see_estadistica <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>](https://www.instagram.com/see_estadistica/)
+
+[@see_estadistica <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>](https://twitter.com/see_estadistica)
+
+[@sosecuest <svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M248,8C111.033,8,0,119.033,0,256S111.033,504,248,504,496,392.967,496,256,384.967,8,248,8ZM362.952,176.66c-3.732,39.215-19.881,134.378-28.1,178.3-3.476,18.584-10.322,24.816-16.948,25.425-14.4,1.326-25.338-9.517-39.287-18.661-21.827-14.308-34.158-23.215-55.346-37.177-24.485-16.135-8.612-25,5.342-39.5,3.652-3.793,67.107-61.51,68.335-66.746.153-.655.3-3.1-1.154-4.384s-3.59-.849-5.135-.5q-3.283.746-104.608,69.142-14.845,10.194-26.894,9.934c-8.855-.191-25.888-5.006-38.551-9.123-15.531-5.048-27.875-7.717-26.8-16.291q.84-6.7,18.45-13.7,108.446-47.248,144.628-62.3c68.872-28.647,83.183-33.623,92.511-33.789,2.052-.034,6.639.474,9.61,2.885a10.452,10.452,0,0,1,3.53,6.716A43.765,43.765,0,0,1,362.952,176.66Z"/></svg>](https://t.me/sosecuest)
+
+]]
+
+.pull-right[
+.center[
+[@lindateachtech <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>](https://twitter.com/lindateachtech)
+
+[@lindateachtech <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>](https://www.linkedin.com/in/lindateachtech/)
+
+[@lindajzmin <svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>](https://github.com/lindajzmin)
+
+[@lindajzmin <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64H348.7c2.2 20.4 3.3 41.8 3.3 64zm28.8-64H503.9c5.3 20.5 8.1 41.9 8.1 64s-2.8 43.5-8.1 64H380.8c2.1-20.6 3.2-42 3.2-64s-1.1-43.4-3.2-64zm112.6-32H376.7c-10-63.9-29.8-117.4-55.3-151.6c78.3 20.7 142 77.5 171.9 151.6zm-149.1 0H167.7c6.1-36.4 15.5-68.6 27-94.7c10.5-23.6 22.2-40.7 33.5-51.5C239.4 3.2 248.7 0 256 0s16.6 3.2 27.8 13.8c11.3 10.8 23 27.9 33.5 51.5c11.6 26 21 58.2 27 94.7zm-209 0H18.6C48.6 85.9 112.2 29.1 190.6 8.4C165.1 42.6 145.3 96.1 135.3 160zM8.1 192H131.2c-2.1 20.6-3.2 42-3.2 64s1.1 43.4 3.2 64H8.1C2.8 299.5 0 278.1 0 256s2.8-43.5 8.1-64zM194.7 446.6c-11.6-26-20.9-58.2-27-94.6H344.3c-6.1 36.4-15.5 68.6-27 94.6c-10.5 23.6-22.2 40.7-33.5 51.5C272.6 508.8 263.3 512 256 512s-16.6-3.2-27.8-13.8c-11.3-10.8-23-27.9-33.5-51.5zM135.3 352c10 63.9 29.8 117.4 55.3 151.6C112.2 482.9 48.6 426.1 18.6 352H135.3zm358.1 0c-30 74.1-93.6 130.9-171.9 151.6c25.5-34.2 45.2-87.7 55.3-151.6H493.4z"/></svg>](https://lindajzmin-website.netlify.app/)
+]]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
