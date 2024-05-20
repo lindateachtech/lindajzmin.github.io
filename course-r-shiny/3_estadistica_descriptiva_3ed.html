@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Capítulo 3: Estadística descriptiva</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="LINDA CABRERA ORELLANA" />
+    <script src="libs/header-attrs-2.17/header-attrs.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/shareon-1.4.1/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon-1.4.1/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain-0.2.6/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain-0.2.6/shareagain.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <link rel="stylesheet" href="theme-masapp.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+class: center, middle, titular
+background-size: contain
+
+&lt;img style="border-radius: 50%;" src="img/logofundapi.jpg" width="250px"/&gt;
+# Capítulo 3:  Estadística descriptiva 
+## **CAPACITACIÓN**
+#### LINDA CABRERA ORELLANA
+#### Mayo, 2024
+
+---
+
+
+
+
+# Contenido del Capítulo 3
+
+
+- Bases de Estadística
+
+- Estadística Descriptiva Univariada
+   * Medidas de tendencia central
+   * Medidas de posición
+   * Medidas de dispersión
+
+
+- Estadística Descriptiva Multivariada
+   * Coeficiente de correlación de Pearson
+   * Matriz de correlación
+
+
+---
+
+
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 384 512" style="height:3em;width:2.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM80 64h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16s7.2-16 16-16zm54.2 253.8c-6.1 20.3-24.8 34.2-46 34.2H80c-8.8 0-16-7.2-16-16s7.2-16 16-16h8.2c7.1 0 13.3-4.6 15.3-11.4l14.9-49.5c3.4-11.3 13.8-19.1 25.6-19.1s22.2 7.7 25.6 19.1l11.6 38.6c7.4-6.2 16.8-9.7 26.8-9.7c15.9 0 30.4 9 37.5 23.2l4.4 8.8H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-6.1 0-11.6-3.4-14.3-8.8l-8.8-17.7c-1.7-3.4-5.1-5.5-8.8-5.5s-7.2 2.1-8.8 5.5l-8.8 17.7c-2.9 5.9-9.2 9.4-15.7 8.8s-12.1-5.1-13.9-11.3L144 349l-9.8 32.8z"/></svg>
+# Bases de Estadística
+
+
+---
+
+background-color: var(--azul-claro)
+class: middle, center, inverse
+
+&lt;img style="border-radius: 50%;" src="https://openseauserdata.com/files/8a93e86385d6b61dc04ba0b34e393246.jpg" width="350px"/&gt;
+
+&gt; "No entiendes realmente algo a menos que
+seas capaz de explicarlo."
+&gt; &lt;footer&gt;ALBERT EINSTEIN&lt;/footer&gt;
+
+
+---
+
+## Análisis estadístico de datos
+
+&lt;br&gt;
+
+&gt; "La estadística estudia los métodos científicos para recoger, organizar, resumir y analizar datos así como para obtener conclusiones válidas y tomar decisiones razonables basadas en tal análisis."
+&gt; &lt;footer&gt;Murray y Spiegel&lt;/footer&gt;
+
+&lt;br&gt;
+
+.pull-left[
+
+**Estadística descriptiva o deductiva**
+
+Conjunto de técnicas que se utilizan con el objetivo de resumir, representar y explicar los datos concretos de los que disponemos.
+]
+
+.pull-right[
+
+**Estadística inferencial o inductiva**
+
+Conjunto de técnicas que se utilizan con el objetivo de deducir (inferir), a partir de los datos, información significativa sobre el total de la población o de las poblaciones de interés.
+]
+
+
+---
+
+## Estadística Descriptiva
+
+Según el número de variables que atiende el análisis podemos dividir la Estadística descriptiva en Univariada y Multivariada.
+
+**Estadística Descriptiva Univariada:** incluye todas las técnicas que hacen referencia a la descripción de una sola variable.
+
+**Estadística Descriptiva Multivariada:** incluye todas las técnicas que hacen referencia a la descripción de dos o más variables.
+
+---
+
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:3em;width:3.38em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M309.6 158.5L332.7 19.8C334.6 8.4 344.5 0 356.1 0c7.5 0 14.5 3.5 19 9.5L392 32h52.1c12.7 0 24.9 5.1 33.9 14.1L496 64h56c13.3 0 24 10.7 24 24v24c0 44.2-35.8 80-80 80H464 448 426.7l-5.1 30.5-112-64zM416 256.1L416 480c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V364.8c-24 12.3-51.2 19.2-80 19.2s-56-6.9-80-19.2V480c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V249.8c-28.8-10.9-51.4-35.3-59.2-66.5L1 167.8c-4.3-17.1 6.1-34.5 23.3-38.8s34.5 6.1 38.8 23.3l3.9 15.5C70.5 182 83.3 192 98 192h30 16H303.8L416 256.1zM464 80c0-8.8-7.2-16-16-16s-16 7.2-16 16s7.2 16 16 16s16-7.2 16-16z"/></svg>
+# Estadística Descriptiva Univariada
+
+
+---
+
+## Medidas de Tendencia Central
+
+Una medida de tendencia central es un valor que indica el centro de un conjunto de elementos para describir características de centralidad.
+
+
+|  Estadístico          |     ¿Qué calcula?    |  Función en R         |
+|:----------------------|:---------------------|----------------------:|
+| Media aritmética  |   El promedio de los datos. La suma de los elementos dividida por el número de elementos |  `mean(x, na.rm=TRUE)`  |
+| Media acotada |  El promedio de los datos removiendo un porcentaje de valores extremos |  `mean(x, na.rm= TRUE, trim=value)`  |
+| Mediana  | Punto medio de los valores ordenados de menor a mayor o de mayor a menor representando el 50% de los datos |  `median(x, na.rm= TRUE)`  |
+| Moda | Valor que aparece con mayor frecuencia  | `mlv(x)` |
+
+
+
+---
+
+## Medidas de Tendencia Central
+
+Calcular las medidas de Tendencia central para la data de `ventas` de la columna del `Total de Ventas`:
+
+
+
+```r
+## Media aritmética
+mean(ranking_2022$ingreso_total, na.rm = TRUE)
+```
+
+
+```r
+## Media acotada
+mean(ranking_2022$ingreso_total, na.rm = TRUE, trim=0.01)
+```
+
+
+```r
+## Mediana
+median(ranking_2022$ingreso_total, na.rm = TRUE)
+```
+
+---
+
+## Medidas de Tendencia Central
+
+Calcular las medidas de Tendencia central para la data de `ventas` de la columna del `Total de Ventas`:
+
+
+
+```r
+## Cargar paquete
+library(modeest)
+
+## Moda
+mlv(ranking_2022$ingreso_total)
+```
+
+
+---
+
+## Medidas de Posición
+
+Una medida de posición es el valor que permite dividir el conjunto de datos en partes porcentuales iguales y se usan para clasificar una observación dentro de una población o muestra.
+
+
+|  Estadístico          |     ¿Qué calcula?    |  Función en R         |
+|:----------------------|:---------------------|----------------------:|
+| Mínimo  |   El valor menor de todo el conjunto de datos |  `min(x, na.rm=TRUE)`  |
+| Máximo |  El valor mayor de todo el conjunto de datos |  `max(x, na.rm= TRUE)`  |
+| Cuartiles  | Dividen al conjunto de observaciones en **4** partes iguales | `quantile(x , probs = 0.75)`  |
+| Deciles | Dividen al conjunto de observaciones en **10** partes iguales  | `quantile(x , probs = 0.3)` |
+| Centiles | Dividen al conjunto de observaciones en **100** partes iguales  | `quantile(x, probs = 0.72)` |
+
+
+
+---
+
+## Medidas de Posición
+
+Entendiendo las medidas de posición:
+
+&lt;img src="img/posicion.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Medidas de Posición
+
+Calcular las medidas de Posición para la data de `ventas` de la columna del `Total de Ventas`:
+
+
+```r
+## Mínimo
+min(ranking_2022$ingreso_total, na.rm = TRUE)
+```
+
+
+```r
+## Máximo
+max(ranking_2022$ingreso_total, na.rm = TRUE)
+```
+
+
+```r
+## Cuartiles
+quantile(ranking_2022$ingreso_total, probs = c(0.25, 0.50, 0.75))
+```
+
+
+---
+
+
+## Medidas de Posición
+
+Calcular las medidas de Posición para la data de `ventas` de la columna del `Total de Ventas`:
+
+
+```r
+## para valores muy grandes
+options(scipen=3)
+
+## Deciles
+quantile(ranking_2022$ingreso_total, probs = seq(from = 0.1, to = 1, by = 0.1))
+```
+
+
+```r
+## Centil 22% y 67%
+quantile(ranking_2022$ingreso_total, probs = c(0.22, 0.67))
+```
+
+
+---
+
+## Medidas de Dispersión
+
+Según la definición de la media, ésta no facilita información de cómo están situados todos los casos respecto de ella, pueden coincidir todos con la media y entonces no sería una variable, sería una constante, pueden estar próximos a la media y entonces ésta se consideraría representativa o pueden estar muy alejados. Con las **medidas de dispersión** se obtiene información de cómo están situados los casos respecto a un estadístico de tendencia central, normalmente, la _media_.
+
+&lt;br&gt;
+
+|  Estadístico          |     ¿Qué calcula?    |  Función en R         |
+|:----------------------|:---------------------|----------------------:|
+| Varianza  |  Mide la distancia de todos los casos respecto a la media aritmética |  `var(x, na.rm=TRUE)`  |
+| Desviación Estándar | Raíz cuadrada de la varianza |  `sd(x, na.rm= TRUE)`  |
+| Rango Intercuartil  | Distancia entre el cuartil **1** y **3** | `IQR(x , na.rm=TRUE)`  |
+| Rango | Diferencia entre máximo y mínimo valor  | `diff(range(x , na.rm=TRUE))` |
+
+
+---
+
+## Medidas de Dispersión
+
+Calcular las medidas de Dispersión para la data de `ventas` de la columna del `Total de Ventas`:
+
+
+```r
+## Varianza
+var(ranking_2022$ingreso_total, na.rm = TRUE)
+```
+
+
+```r
+## Desviación Estándar
+sd(ranking_2022$ingreso_total, na.rm = TRUE)
+```
+
+
+```r
+## Rango Intercuartil
+IQR(ranking_2022$ingreso_total, na.rm = TRUE)
+```
+
+
+```r
+## Rango
+diff(range(ranking_2022$ingreso_total, na.rm = TRUE))
+```
+
+
+---
+
+class: middle, center, inverse
+
+<svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:3em;width:3.38em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M309.6 158.5L332.7 19.8C334.6 8.4 344.5 0 356.1 0c7.5 0 14.5 3.5 19 9.5L392 32h52.1c12.7 0 24.9 5.1 33.9 14.1L496 64h56c13.3 0 24 10.7 24 24v24c0 44.2-35.8 80-80 80H464 448 426.7l-5.1 30.5-112-64zM416 256.1L416 480c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V364.8c-24 12.3-51.2 19.2-80 19.2s-56-6.9-80-19.2V480c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V249.8c-28.8-10.9-51.4-35.3-59.2-66.5L1 167.8c-4.3-17.1 6.1-34.5 23.3-38.8s34.5 6.1 38.8 23.3l3.9 15.5C70.5 182 83.3 192 98 192h30 16H303.8L416 256.1zM464 80c0-8.8-7.2-16-16-16s-16 7.2-16 16s7.2 16 16 16s16-7.2 16-16z"/></svg> <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:3em;width:3.38em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M309.6 158.5L332.7 19.8C334.6 8.4 344.5 0 356.1 0c7.5 0 14.5 3.5 19 9.5L392 32h52.1c12.7 0 24.9 5.1 33.9 14.1L496 64h56c13.3 0 24 10.7 24 24v24c0 44.2-35.8 80-80 80H464 448 426.7l-5.1 30.5-112-64zM416 256.1L416 480c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V364.8c-24 12.3-51.2 19.2-80 19.2s-56-6.9-80-19.2V480c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V249.8c-28.8-10.9-51.4-35.3-59.2-66.5L1 167.8c-4.3-17.1 6.1-34.5 23.3-38.8s34.5 6.1 38.8 23.3l3.9 15.5C70.5 182 83.3 192 98 192h30 16H303.8L416 256.1zM464 80c0-8.8-7.2-16-16-16s-16 7.2-16 16s7.2 16 16 16s16-7.2 16-16z"/></svg> <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:3em;width:3.38em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M309.6 158.5L332.7 19.8C334.6 8.4 344.5 0 356.1 0c7.5 0 14.5 3.5 19 9.5L392 32h52.1c12.7 0 24.9 5.1 33.9 14.1L496 64h56c13.3 0 24 10.7 24 24v24c0 44.2-35.8 80-80 80H464 448 426.7l-5.1 30.5-112-64zM416 256.1L416 480c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V364.8c-24 12.3-51.2 19.2-80 19.2s-56-6.9-80-19.2V480c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V249.8c-28.8-10.9-51.4-35.3-59.2-66.5L1 167.8c-4.3-17.1 6.1-34.5 23.3-38.8s34.5 6.1 38.8 23.3l3.9 15.5C70.5 182 83.3 192 98 192h30 16H303.8L416 256.1zM464 80c0-8.8-7.2-16-16-16s-16 7.2-16 16s7.2 16 16 16s16-7.2 16-16z"/></svg>
+# Estadística Descriptiva Multivariada
+
+
+---
+
+## Coeficiente de Correlación de Pearson
+
+El coeficiente de correlación de Pearson es un índice que puede utilizarse para medir el grado de relación de dos variables siempre y cuando ambas sean cuantitativas y continuas.
+
+El valor del índice de correlación denotado por `\(r_{xy}\)` varía en el intervalo `\([-1,1]\)`. El signo indica el sentido de la relación:
+
+- Si `\(r=1\)`, existe una correlación positiva perfecta. El índice indica una dependencia total entre las dos variables denominada relación directa: cuando una de ellas aumenta, la otra también lo hace en proporción constante.
+
+- Si `\(0&lt;r&lt;1\)` entonces existe una correlación positiva.
+
+- Si `\(r=0\)` entonces no existe relación lineal pero esto no necesariamente implica que las variables son independientes: pueden existir todavía relaciones no lineales entre las dos variables.
+
+- Si `\(-1&lt;r&lt;0\)`, existe una correlación negativa.
+
+- Si `\(r=-1\)`, existe una correlación negativa perfecta. El índice indica una dependencia total entre las dos variables llamada relación opuesta: cuando una de ellas aumenta, la otra cambia su signo en proporción constante.
+
+
+---
+
+
+&lt;img src="img/correlacion.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Coeficiente de Correlación de Pearson
+
+Calculamos la correlación entre dos variables numéricas continuas con `cor()`.
+
+
+```r
+## Coeficiente de Correlacion
+cor(ranking_2022$ingreso_total, ranking_2022$patrimonio)
+```
+
+Se puede ver que existe una alta correlación positiva entre lo reportado por concepto de ventas y las compras, ojo, **esto no implica que mayores ventas causa mayores compras**.
+
+
+
+---
+
+## Matriz de Correlación
+
+Matriz que resume la correlación de varias variables.
+
+&lt;img src="img/matriz.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Matriz de Correlación
+
+Genero la matriz de correlación seleccionando solo las variables numéricas y aplicando `cor()`.
+
+
+```r
+## Matriz que resume la correlación de varias variables numéricas
+## Deselecciono Total de ventas, Total de Compras y Compras RISE
+matrix_cor &lt;- ranking_2022 %&gt;%
+    select_if(is.numeric) %&gt;% cor()
+
+
+## Genero la matriz de correlación
+round(matrix_cor, 2) %&gt;% view()
+```
+
+
+
+```r
+## Mapa de Calor
+heatmap(matrix_cor, col = gray(seq(1, 0, length = 16)))
+```
+
+
+---
+
+
+class: middle, center, inverse
+
+&lt;br&gt;
+&lt;br&gt;
+
+# Estadística descriptiva
+## **CAPÍTULO 3**
+
+&lt;br&gt;
+&lt;br&gt;
+
+.center[
+### [@lindateachtech <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>](https://www.linkedin.com/in/lindateachtech/)
+
+### [@lindateachtech <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>](https://twitter.com/lindateachtech)
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
